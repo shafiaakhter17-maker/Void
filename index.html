@@ -637,7 +637,36 @@
        JAVASCRIPT
   ========================== -->
 
-  <script src="script.js"></script>
+  
+<!-- FULL PAGE READER -->
+<div id="readerModal" class="reader-modal">
 
-</body>
+  <div class="reader-topbar">
+    <button class="reader-back" onclick="closeReader()">←</button>
+
+    <div class="reader-actions">
+      <button onclick="editCurrentEntry()">Edit</button>
+      <button onclick="deleteCurrentEntry()">Delete</button>
+    </div>
+  </div>
+
+  <main class="reader-content">
+
+    <div class="reader-type" id="readerType">
+      JOURNAL
+    </div>
+
+    <h1 id="readerTitle"></h1>
+
+    <div class="reader-date" id="readerDate"></div>
+
+    <div class="reader-line"></div>
+
+    <div class="reader-text" id="readerText"></div>
+
+  </main>
+
+</div>
+<script src="script.js"></script>
+</b0ody>
 </html>
