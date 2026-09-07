@@ -3,170 +3,129 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+  >
 
-  <meta name="theme-color" content="#080808">
-
-  <meta name="description"
-        content="VOID — a quiet place for thoughts, notes, plans and little things.">
-
-  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#050505">
 
   <title>VOID</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin>
-
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div id="app">
+  <!-- =========================
+       APP
+  ========================== -->
 
-  <!-- MOBILE OVERLAY -->
-  <div id="overlay" class="overlay"></div>
+  <div id="app">
 
-  <!-- SIDEBAR -->
-  <aside id="sidebar" class="sidebar">
+    <!-- SIDEBAR -->
 
-    <button class="close-sidebar" onclick="closeSidebar()">×</button>
+    <aside id="sidebar">
 
-    <div class="brand">
+      <div class="brand">
 
-      <div class="brand-art">
-        ♡
-      </div>
+        <div class="brand-icon">♡</div>
 
-      <div class="brand-name">
-        VOID
-      </div>
+        <h1>VOID</h1>
 
-      <div class="brand-heart">♡</div>
-
-    </div>
-
-    <nav>
-
-      <button class="nav-item active"
-              data-page="home"
-              onclick="showPage('home')">
-        <span>⌂</span>
-        <label>Home</label>
-      </button>
-
-      <button class="nav-item"
-              data-page="journal"
-              onclick="showPage('journal')">
-        <span>▤</span>
-        <label>Journal</label>
-      </button>
-
-      <button class="nav-item"
-              data-page="todo"
-              onclick="showPage('todo')">
-        <span>☑</span>
-        <label>To Do List</label>
-      </button>
-
-      <button class="nav-item"
-              data-page="notes"
-              onclick="showPage('notes')">
-        <span>▤</span>
-        <label>Notes</label>
-      </button>
-
-      <button class="nav-item"
-              data-page="hobbies"
-              onclick="showPage('hobbies')">
-        <span>☕</span>
-        <label>Hobbies</label>
-      </button>
-
-      <button class="nav-item"
-              data-page="mood"
-              onclick="showPage('mood')">
-        <span>♡</span>
-        <label>Mood</label>
-      </button>
-
-      <button class="nav-item"
-              data-page="bookshelf"
-              onclick="showPage('bookshelf')">
-        <span>▥</span>
-        <label>Bookshelf</label>
-      </button>
-
-      <button class="nav-item"
-              data-page="settings"
-              onclick="showPage('settings')">
-        <span>⚙</span>
-        <label>Settings</label>
-      </button>
-
-    </nav>
-
-    <div class="sidebar-quote">
-      Small notes<br>
-      for a big life ♡
-    </div>
-
-  </aside>
-
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- MOBILE HEADER -->
-    <header class="mobile-header">
-
-      <button onclick="openSidebar()" class="menu-btn">
-        ☰
-      </button>
-
-      <span>VOID</span>
-
-    </header>
-
-
-    <!-- HOME -->
-    <section id="home" class="page active-page">
-
-      <div class="home-top">
-
-        <div>
-          <div class="eyebrow">A quiet place for you</div>
-
-          <h1 id="greeting">
-            Good morning ♡
-          </h1>
-
-          <p>
-            A little progress each day adds up to big things.
-          </p>
-        </div>
-
-        <div class="date-box">
-          <span id="todayDate"></span>
-          <button onclick="toggleTheme()">☼</button>
-        </div>
+        <p>small notes<br>for a quiet mind</p>
 
       </div>
 
 
-      <div class="home-layout">
+      <nav>
 
-        <div class="cards-grid">
+        <button class="nav-item active" onclick="showPage('home')">
+          <span>⌂</span>
+          <label>Home</label>
+        </button>
 
-          <button class="feature-card"
-                  onclick="showPage('journal')">
+        <button class="nav-item" onclick="showPage('journal')">
+          <span>▱</span>
+          <label>Journal</label>
+        </button>
+
+        <button class="nav-item" onclick="showPage('todo')">
+          <span>☑</span>
+          <label>To Do List</label>
+        </button>
+
+        <button class="nav-item" onclick="showPage('notes')">
+          <span>▤</span>
+          <label>Notes</label>
+        </button>
+
+        <button class="nav-item" onclick="showPage('hobbies')">
+          <span>☕</span>
+          <label>Hobbies</label>
+        </button>
+
+        <button class="nav-item" onclick="showPage('mood')">
+          <span>♡</span>
+          <label>Mood</label>
+        </button>
+
+        <button class="nav-item" onclick="showPage('bookshelf')">
+          <span>▥</span>
+          <label>Bookshelf</label>
+        </button>
+
+        <button class="nav-item" onclick="showPage('settings')">
+          <span>⚙</span>
+          <label>Settings</label>
+        </button>
+
+      </nav>
+
+
+      <div class="sidebar-quote">
+        <span>Small notes</span>
+        <br>
+        <span>for a big life ♡</span>
+      </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main id="main">
+
+
+      <!-- =========================
+           HOME
+      ========================== -->
+
+      <section id="home" class="page active-page">
+
+        <header class="home-header">
+
+          <div>
+            <h2>Good Morning ♡</h2>
+
+            <p>
+              A little progress each day adds up to big things.
+            </p>
+          </div>
+
+          <div class="date-box">
+            <span id="currentDate"></span>
+            <button onclick="toggleTheme()" title="Change theme">
+              ☼
+            </button>
+          </div>
+
+        </header>
+
+
+        <div class="home-grid">
+
+          <button class="category-card" onclick="showPage('journal')">
 
             <div class="card-icon">☕</div>
 
@@ -178,10 +137,9 @@
           </button>
 
 
-          <button class="feature-card"
-                  onclick="showPage('todo')">
+          <button class="category-card" onclick="showPage('todo')">
 
-            <div class="card-icon">▤</div>
+            <div class="card-icon">☷</div>
 
             <div class="card-bottom">
               <span>To Do List</span>
@@ -191,10 +149,9 @@
           </button>
 
 
-          <button class="feature-card"
-                  onclick="showPage('notes')">
+          <button class="category-card" onclick="showPage('notes')">
 
-            <div class="card-icon">□</div>
+            <div class="card-icon">▱</div>
 
             <div class="card-bottom">
               <span>Notes</span>
@@ -204,10 +161,9 @@
           </button>
 
 
-          <button class="feature-card"
-                  onclick="showPage('hobbies')">
+          <button class="category-card" onclick="showPage('hobbies')">
 
-            <div class="card-icon">♡</div>
+            <div class="card-icon">✎</div>
 
             <div class="card-bottom">
               <span>Hobbies</span>
@@ -217,8 +173,7 @@
           </button>
 
 
-          <button class="feature-card"
-                  onclick="showPage('mood')">
+          <button class="category-card" onclick="showPage('mood')">
 
             <div class="card-icon">♡</div>
 
@@ -230,8 +185,7 @@
           </button>
 
 
-          <button class="feature-card"
-                  onclick="showPage('bookshelf')">
+          <button class="category-card" onclick="showPage('bookshelf')">
 
             <div class="card-icon">▥</div>
 
@@ -245,469 +199,445 @@
         </div>
 
 
-        <div class="home-side-note">
+        <div class="home-note">
 
-          ✧
-
-          <div>
-            Better notes<br>
-            —<br>
-            Calmer mind ♡
-          </div>
-
-          ✧
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- JOURNAL LIST -->
-    <section id="journal" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button"
-                onclick="showPage('home')">
-          ←
-        </button>
-
-        <h2>Journal</h2>
-
-        <button class="add-button"
-                onclick="openJournalEditor()">
-          +
-        </button>
-
-      </div>
-
-
-      <div class="section-intro">
-
-        <div class="large-icon">
-          ♡
-        </div>
-
-        <div>
-
-          <h1>Journal</h1>
+          <span>✧</span>
 
           <p>
-            Thoughts · Feelings · My own world
+            Better notes.<br>
+            Calmer mind.
           </p>
 
-        </div>
-
-      </div>
-
-
-      <div class="divider"></div>
-
-      <div id="journalList" class="entry-list"></div>
-
-    </section>
-
-
-    <!-- JOURNAL DETAIL -->
-    <section id="journalDetail" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button"
-                onclick="showPage('journal')">
-          ←
-        </button>
-
-        <h2>Journal</h2>
-
-        <div class="header-actions">
-
-          <button onclick="editCurrentJournal()">✎</button>
-
-          <button onclick="deleteCurrentJournal()">⋮</button>
+          <span>♡</span>
 
         </div>
 
-      </div>
+      </section>
 
 
-      <article class="journal-paper">
 
-        <div class="journal-number"
-             id="detailNumber">
-          1
-        </div>
+      <!-- =========================
+           JOURNAL
+      ========================== -->
 
-        <h1 id="detailTitle">
-          A fresh start
-        </h1>
+      <section id="journal" class="page">
 
-        <div id="detailDate"
-             class="entry-date">
-        </div>
+        <div class="page-top">
 
-        <div class="divider"></div>
+          <button onclick="showPage('home')" class="back-button">
+            ←
+          </button>
 
-        <div id="detailContent"
-             class="journal-content">
-        </div>
+          <h2>Journal</h2>
 
-        <div class="journal-decoration">
-          ✿
-        </div>
-
-      </article>
-
-    </section>
-
-
-    <!-- TODO -->
-    <section id="todo" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button"
-                onclick="showPage('home')">
-          ←
-        </button>
-
-        <h2>To Do List</h2>
-
-        <button class="add-button"
-                onclick="openTodoEditor()">
-          +
-        </button>
-
-      </div>
-
-
-      <div class="section-intro">
-
-        <div class="large-icon">
-          ☑
-        </div>
-
-        <div>
-
-          <h1>To Do List</h1>
-
-          <p>Small steps · Big dreams</p>
-
-        </div>
-
-      </div>
-
-      <div class="divider"></div>
-
-      <div id="todoList"></div>
-
-    </section>
-
-
-    <!-- NOTES -->
-    <section id="notes" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button"
-                onclick="showPage('home')">
-          ←
-        </button>
-
-        <h2>Notes</h2>
-
-        <button class="add-button"
-                onclick="openNoteEditor()">
-          +
-        </button>
-
-      </div>
-
-
-      <div class="section-intro">
-
-        <div class="large-icon">□</div>
-
-        <div>
-
-          <h1>Notes</h1>
-
-          <p>Little thoughts worth keeping</p>
-
-        </div>
-
-      </div>
-
-      <div class="divider"></div>
-
-      <div id="notesList" class="entry-list"></div>
-
-    </section>
-
-
-    <!-- NOTE DETAIL -->
-    <section id="noteDetail" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button"
-                onclick="showPage('notes')">
-          ←
-        </button>
-
-        <h2>Notes</h2>
-
-        <button onclick="editCurrentNote()">✎</button>
-
-      </div>
-
-      <article class="journal-paper">
-
-        <h1 id="noteDetailTitle"></h1>
-
-        <div id="noteDetailDate"
-             class="entry-date">
-        </div>
-
-        <div class="divider"></div>
-
-        <div id="noteDetailContent"
-             class="journal-content">
-        </div>
-
-      </article>
-
-    </section>
-
-
-    <!-- HOBBIES -->
-    <section id="hobbies" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button"
-                onclick="showPage('home')">
-          ←
-        </button>
-
-        <h2>Hobbies</h2>
-
-        <button class="add-button"
-                onclick="openHobbyEditor()">
-          +
-        </button>
-
-      </div>
-
-      <div class="section-intro">
-
-        <div class="large-icon">☕</div>
-
-        <div>
-
-          <h1>Hobbies</h1>
-
-          <p>Things that make life feel like yours</p>
-
-        </div>
-
-      </div>
-
-      <div class="divider"></div>
-
-      <div id="hobbiesList" class="entry-list"></div>
-
-    </section>
-
-
-    <!-- MOOD -->
-    <section id="mood" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button"
-                onclick="showPage('home')">
-          ←
-        </button>
-
-        <h2>Mood</h2>
-
-      </div>
-
-      <div class="section-intro">
-
-        <div class="large-icon">♡</div>
-
-        <div>
-
-          <h1>How are you feeling?</h1>
-
-          <p>No right or wrong answer.</p>
-
-        </div>
-
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="mood-grid">
-
-        <button onclick="saveMood('peaceful','☁')">
-          ☁<small>Peaceful</small>
-        </button>
-
-        <button onclick="saveMood('happy','♡')">
-          ♡<small>Happy</small>
-        </button>
-
-        <button onclick="saveMood('okay','○')">
-          ○<small>Okay</small>
-        </button>
-
-        <button onclick="saveMood('tired','—')">
-          —<small>Tired</small>
-        </button>
-
-        <button onclick="saveMood('sad','☂')">
-          ☂<small>Sad</small>
-        </button>
-
-        <button onclick="saveMood('focused','✦')">
-          ✦<small>Focused</small>
-        </button>
-
-      </div>
-
-      <div id="moodHistory"></div>
-
-    </section>
-
-
-    <!-- BOOKSHELF -->
-    <section id="bookshelf" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button"
-                onclick="showPage('home')">
-          ←
-        </button>
-
-        <h2>Bookshelf</h2>
-
-        <button class="add-button"
-                onclick="openBookEditor()">
-          +
-        </button>
-
-      </div>
-
-      <div class="section-intro">
-
-        <div class="large-icon">▥</div>
-
-        <div>
-
-          <h1>Bookshelf</h1>
-
-          <p>Stories waiting to be discovered</p>
-
-        </div>
-
-      </div>
-
-      <div class="divider"></div>
-
-      <div id="booksList"
-           class="books-grid">
-      </div>
-
-    </section>
-
-
-    <!-- SETTINGS -->
-    <section id="settings" class="page">
-
-      <div class="page-header">
-
-        <button class="back-button"
-                onclick="showPage('home')">
-          ←
-        </button>
-
-        <h2>Settings</h2>
-
-      </div>
-
-      <div class="settings-box">
-
-        <h1>VOID</h1>
-
-        <p class="muted">
-          Make this little space yours.
-        </p>
-
-        <div class="setting-row">
-
-          <div>
-            <strong>Appearance</strong>
-            <small>Switch between dark and light</small>
-          </div>
-
-          <button onclick="toggleTheme()"
-                  class="setting-button">
-            ☼
+          <button
+            class="add-button"
+            onclick="openEditor('journal')"
+          >
+            +
           </button>
 
         </div>
 
 
-        <div class="setting-row">
+        <div class="section-heading">
 
-          <div>
-            <strong>Clear all data</strong>
-            <small>Delete journals, notes and tasks</small>
+          <div class="section-icon">
+            ♡
           </div>
 
-          <button onclick="clearAllData()"
-                  class="danger-button">
-            Clear
+          <div>
+            <h1>Journal</h1>
+
+            <p>
+              Thoughts · Feelings · My own world
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="divider"></div>
+
+
+        <div id="journalList" class="entry-list">
+
+          <!-- Entries will appear here -->
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           TO DO
+      ========================== -->
+
+      <section id="todo" class="page">
+
+        <div class="page-top">
+
+          <button onclick="showPage('home')" class="back-button">
+            ←
+          </button>
+
+          <h2>To Do List</h2>
+
+          <button
+            class="add-button"
+            onclick="openEditor('todo')"
+          >
+            +
           </button>
 
         </div>
 
-      </div>
 
-    </section>
+        <div class="section-heading">
 
-  </main>
+          <div class="section-icon">
+            ☑
+          </div>
 
-</div>
+          <div>
+            <h1>To Do List</h1>
+
+            <p>
+              Small steps · Big dreams
+            </p>
+          </div>
+
+        </div>
 
 
-<!-- MODAL -->
-<div id="modal"
-     class="modal">
+        <div class="divider"></div>
 
-  <div class="modal-box">
 
-    <button class="modal-close"
-            onclick="closeModal()">
-      ×
-    </button>
+        <div id="todoList" class="todo-list">
 
-    <h2 id="modalTitle">New entry</h2>
+          <!-- Tasks will appear here -->
 
-    <div id="modalBody"></div>
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           NOTES
+      ========================== -->
+
+      <section id="notes" class="page">
+
+        <div class="page-top">
+
+          <button onclick="showPage('home')" class="back-button">
+            ←
+          </button>
+
+          <h2>Notes</h2>
+
+          <button
+            class="add-button"
+            onclick="openEditor('notes')"
+          >
+            +
+          </button>
+
+        </div>
+
+
+        <div class="section-heading">
+
+          <div class="section-icon">
+            ▱
+          </div>
+
+          <div>
+            <h1>Notes</h1>
+
+            <p>
+              Ideas · Study · Things to remember
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="divider"></div>
+
+
+        <div id="notesList" class="entry-list">
+
+          <!-- Notes will appear here -->
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           HOBBIES
+      ========================== -->
+
+      <section id="hobbies" class="page">
+
+        <div class="page-top">
+
+          <button onclick="showPage('home')" class="back-button">
+            ←
+          </button>
+
+          <h2>Hobbies</h2>
+
+          <button
+            class="add-button"
+            onclick="openEditor('hobbies')"
+          >
+            +
+          </button>
+
+        </div>
+
+
+        <div class="section-heading">
+
+          <div class="section-icon">
+            ✎
+          </div>
+
+          <div>
+            <h1>Hobbies</h1>
+
+            <p>
+              Things I love · Things I create
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="divider"></div>
+
+
+        <div id="hobbiesList" class="entry-list">
+
+          <!-- Hobbies will appear here -->
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           MOOD
+      ========================== -->
+
+      <section id="mood" class="page">
+
+        <div class="page-top">
+
+          <button onclick="showPage('home')" class="back-button">
+            ←
+          </button>
+
+          <h2>Mood</h2>
+
+          <button
+            class="add-button"
+            onclick="openEditor('mood')"
+          >
+            +
+          </button>
+
+        </div>
+
+
+        <div class="section-heading">
+
+          <div class="section-icon">
+            ♡
+          </div>
+
+          <div>
+            <h1>Mood</h1>
+
+            <p>
+              How I feel · What I need
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="divider"></div>
+
+
+        <div id="moodList" class="entry-list">
+
+          <!-- Mood entries will appear here -->
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           BOOKSHELF
+      ========================== -->
+
+      <section id="bookshelf" class="page">
+
+        <div class="page-top">
+
+          <button onclick="showPage('home')" class="back-button">
+            ←
+          </button>
+
+          <h2>Bookshelf</h2>
+
+          <button
+            class="add-button"
+            onclick="openEditor('bookshelf')"
+          >
+            +
+          </button>
+
+        </div>
+
+
+        <div class="section-heading">
+
+          <div class="section-icon">
+            ▥
+          </div>
+
+          <div>
+            <h1>Bookshelf</h1>
+
+            <p>
+              Books · Reading · Little worlds
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="divider"></div>
+
+
+        <div id="bookshelfList" class="entry-list">
+
+          <!-- Books will appear here -->
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =========================
+           SETTINGS
+      ========================== -->
+
+      <section id="settings" class="page">
+
+        <div class="page-top">
+
+          <button onclick="showPage('home')" class="back-button">
+            ←
+          </button>
+
+          <h2>Settings</h2>
+
+        </div>
+
+
+        <div class="settings-box">
+
+          <h1>VOID</h1>
+
+          <p>
+            A quiet place for your thoughts.
+          </p>
+
+
+          <button onclick="toggleTheme()" class="setting-button">
+            ☼ &nbsp; Change appearance
+          </button>
+
+
+          <button onclick="clearAllData()" class="setting-button danger">
+            Delete all saved entries
+          </button>
+
+        </div>
+
+      </section>
+
+    </main>
 
   </div>
 
-</div>
 
 
-<script src="script.js"></script>
+  <!-- =========================
+       EDITOR MODAL
+  ========================== -->
+
+  <div id="editorModal" class="modal">
+
+    <div class="modal-content">
+
+      <button
+        class="close-modal"
+        onclick="closeEditor()"
+      >
+        ×
+      </button>
+
+
+      <h2 id="editorTitle">
+        New Entry
+      </h2>
+
+
+      <input
+        id="entryTitle"
+        type="text"
+        placeholder="Give it a title..."
+        autocomplete="off"
+      >
+
+
+      <textarea
+        id="entryContent"
+        placeholder="Write whatever is on your mind..."
+      ></textarea>
+
+
+      <button
+        class="save-button"
+        onclick="saveEntry()"
+      >
+        Save
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
+  <script src="script.js"></script>
 
 </body>
 </html>
