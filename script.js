@@ -1,5 +1,6 @@
 /* =========================================
-   VOID — MAIN JAVASCRIPT
+   VOID
+   Personal Notes & Journal App
 ========================================= */
 
 
@@ -7,58 +8,16 @@
    DATA
 ========================================= */
 
-let entries = JSON.parse(
-  localStorage.getItem("voidEntries")
-) || [];
+let entries =
+  JSON.parse(localStorage.getItem("voidEntries")) || [];
 
-let todos = JSON.parse(
-  localStorage.getItem("voidTodos")
-) || [];
+let todos =
+  JSON.parse(localStorage.getItem("voidTodos")) || [];
 
 let currentType = "";
 let editingId = null;
+let currentReaderId = null;
 
-
-/* =========================================
-   START APP
-========================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  updateDate();
-
-  renderAll();
-
-  loadTheme();
-
-});
-
-
-/* =========================================
-   DATE
-========================================= */
-
-function updateDate() {
-
-  const dateElement =
-    document.getElementById("currentDate");
-
-  if (!dateElement) return;
-
-  const today = new Date();
-
-  const options = {
-    weekday: "long",
-    day: "numeric",
-    month: "long"
-  };
-
-  dateElement.textContent =
-    today.toLocaleDateString(
-      "en-US",
-      options
-    );
-}
 
 
 /* =========================================
@@ -83,26 +42,32 @@ function showPage(pageId) {
   }
 
 
-  /* Update sidebar */
+  const buttons =
+    document.querySelectorAll(".nav-btn");
 
-  const navItems =
-    document.querySelectorAll(".nav-item");
-
-  navItems.forEach(item => {
-    item.classList.remove("active");
+  buttons.forEach(button => {
+    button.classList.remove("active");
   });
 
 
-  navItems.forEach(item => {
+  buttons.forEach(button => {
 
-    const onclick =
-      item.getAttribute("onclick");
+    const text =
+      button.textContent
+        .trim()
+        .toLowerCase();
 
     if (
-      onclick &&
-      onclick.includes("'" + pageId + "'")
+      (pageId === "home" && text.includes("home")) ||
+      (pageId === "journal" && text.includes("journal")) ||
+      (pageId === "notes" && text.includes("notes")) ||
+      (pageId === "todo" && text.includes("to do")) ||
+      (pageId === "hobbies" && text.includes("hobbies")) ||
+      (pageId === "mood" && text.includes("mood")) ||
+      (pageId === "bookshelf" && text.includes("bookshelf")) ||
+      (pageId === "settings" && text.includes("settings"))
     ) {
-      item.classList.add("active");
+      button.classList.add("active");
     }
 
   });
@@ -115,16 +80,15 @@ function showPage(pageId) {
 }
 
 
+
 /* =========================================
-   OPEN EDITOR
+   ENTRY EDITOR
 ========================================= */
 
 function openEditor(type, id = null) {
 
   currentType = type;
-
   editingId = id;
-
 
   const modal =
     document.getElementById("editorModal");
@@ -132,52 +96,49 @@ function openEditor(type, id = null) {
   const title =
     document.getElementById("editorTitle");
 
-  const input =
+  const label =
+    document.getElementById("editorLabel");
+
+  const titleInput =
     document.getElementById("entryTitle");
 
-  const textarea =
+  const contentInput =
     document.getElementById("entryContent");
 
 
-  /* Reset */
-
-  input.value = "";
-  textarea.value = "";
-
-
-  /* Different editor names */
-
   const names = {
-    journal: "New Journal",
-    notes: "New Note",
-    hobbies: "New Hobby",
-    mood: "New Mood Entry",
-    bookshelf: "Add Book",
-    todo: "New Task"
+    journal: "Journal",
+    notes: "Note",
+    hobbies: "Hobby",
+    mood: "Mood",
+    bookshelf: "Book"
   };
 
 
+  label.textContent =
+    id ? "EDIT ENTRY" : "NEW " + names[type].toUpperCase();
+
+
   title.textContent =
-    names[type] || "New Entry";
+    id ? "Edit your writing" : names[type];
 
 
-  /* Editing existing entry */
+  titleInput.value = "";
+  contentInput.value = "";
 
-  if (id !== null) {
 
-    const existing =
-      entries.find(entry => entry.id === id);
+  if (id) {
 
-    if (existing) {
+    const entry =
+      entries.find(item => item.id === id);
 
-      input.value =
-        existing.title;
+    if (entry) {
 
-      textarea.value =
-        existing.content;
+      titleInput.value =
+        entry.title;
 
-      title.textContent =
-        "Edit Entry";
+      contentInput.value =
+        entry.content;
 
     }
 
@@ -187,31 +148,22 @@ function openEditor(type, id = null) {
   modal.classList.add("show");
 
   setTimeout(() => {
-    input.focus();
+    titleInput.focus();
   }, 100);
-
 }
 
 
-/* =========================================
-   CLOSE EDITOR
-========================================= */
 
 function closeEditor() {
 
-  const modal =
-    document.getElementById("editorModal");
-
-  modal.classList.remove("show");
-
-  document.getElementById("entryTitle").value = "";
-
-  document.getElementById("entryContent").value = "";
-
-  currentType = "";
+  document
+    .getElementById("editorModal")
+    .classList.remove("show");
 
   editingId = null;
+
 }
+
 
 
 /* =========================================
@@ -220,77 +172,44 @@ function closeEditor() {
 
 function saveEntry() {
 
+  const titleInput =
+    document.getElementById("entryTitle");
+
+  const contentInput =
+    document.getElementById("entryContent");
+
+
   const title =
-    document.getElementById("entryTitle")
-      .value
-      .trim();
+    titleInput.value.trim();
 
   const content =
-    document.getElementById("entryContent")
-      .value
-      .trim();
+    contentInput.value.trim();
 
-
-  /* Don't allow completely empty entries */
 
   if (!title && !content) {
 
-    alert(
-      "Please write something first."
-    );
+    alert("Write something first.");
 
     return;
   }
 
 
-  /* =====================================
-     TODO
-  ===================================== */
-
-  if (currentType === "todo") {
-
-    const taskText =
-      title || content;
-
-    todos.push({
-
-      id: Date.now(),
-
-      text: taskText,
-
-      completed: false
-
-    });
+  const finalTitle =
+    title || "Untitled";
 
 
-    saveTodos();
-
-    closeEditor();
-
-    renderTodos();
-
-    showPage("todo");
-
-    return;
-  }
-
-
-  /* =====================================
-     NORMAL ENTRY
-  ===================================== */
-
-  if (editingId !== null) {
+  if (editingId) {
 
     const index =
       entries.findIndex(
-        entry => entry.id === editingId
+        item => item.id === editingId
       );
 
 
     if (index !== -1) {
 
       entries[index].title =
-        title || "Untitled";
+        finalTitle;
 
       entries[index].content =
         content;
@@ -304,13 +223,17 @@ function saveEntry() {
 
     entries.unshift({
 
-      id: Date.now(),
+      id:
+        Date.now().toString(),
 
-      type: currentType,
+      type:
+        currentType,
 
-      title: title || "Untitled",
+      title:
+        finalTitle,
 
-      content: content,
+      content:
+        content,
 
       created:
         new Date().toISOString(),
@@ -323,7 +246,11 @@ function saveEntry() {
   }
 
 
-  saveEntries();
+  localStorage.setItem(
+    "voidEntries",
+    JSON.stringify(entries)
+  );
+
 
   closeEditor();
 
@@ -331,33 +258,6 @@ function saveEntry() {
 
 }
 
-
-/* =========================================
-   SAVE ENTRIES
-========================================= */
-
-function saveEntries() {
-
-  localStorage.setItem(
-    "voidEntries",
-    JSON.stringify(entries)
-  );
-
-}
-
-
-/* =========================================
-   SAVE TODOS
-========================================= */
-
-function saveTodos() {
-
-  localStorage.setItem(
-    "voidTodos",
-    JSON.stringify(todos)
-  );
-
-}
 
 
 /* =========================================
@@ -396,6 +296,7 @@ function renderAll() {
 }
 
 
+
 /* =========================================
    RENDER ENTRIES
 ========================================= */
@@ -404,6 +305,7 @@ function renderEntries(type, containerId) {
 
   const container =
     document.getElementById(containerId);
+
 
   if (!container) return;
 
@@ -414,20 +316,18 @@ function renderEntries(type, containerId) {
     );
 
 
-  /* Empty */
-
   if (filtered.length === 0) {
 
     container.innerHTML = `
 
-      <div class="empty-state">
+      <div class="empty">
 
-        <div class="empty-icon">♡</div>
+        <div class="empty-symbol">+</div>
 
-        <h3>Nothing here yet</h3>
+        <h3>Nothing here yet.</h3>
 
         <p>
-          Tap + to write something
+          Create your first entry whenever you're ready.
         </p>
 
       </div>
@@ -438,155 +338,289 @@ function renderEntries(type, containerId) {
   }
 
 
-  /* Entries */
-
   container.innerHTML =
-    filtered
-      .map((entry, index) => {
+    filtered.map(entry => {
 
-        const date =
-          formatDate(
-            entry.created
-          );
-
-
-        const preview =
-          escapeHTML(
-            entry.content
-          );
+      const preview =
+        escapeHTML(
+          entry.content || ""
+        );
 
 
-        return `
-
-          <article
-            class="entry"
-            onclick="openEntry(${entry.id})"
-          >
-
-            <div class="entry-number">
-
-              ${String(index + 1).padStart(2, "0")}
-
-            </div>
+      const title =
+        escapeHTML(entry.title);
 
 
-            <div class="entry-info">
+      return `
 
-              <h3>
-                ${escapeHTML(entry.title)}
-              </h3>
+        <article
+          class="entry-card"
+          onclick="openReader('${entry.id}')"
+        >
 
-              <div class="entry-date">
-                ${date}
-              </div>
+          <div class="entry-type">
+            ${type.toUpperCase()}
+          </div>
 
-              ${
-                preview
-                  ? `
-                    <div class="entry-preview">
-                      ${preview}
-                    </div>
-                  `
-                  : ""
-              }
+          <h3>
+            ${title}
+          </h3>
 
-            </div>
+          <p class="entry-preview">
+            ${preview || "No text added."}
+          </p>
 
+          <div class="entry-date">
+            ${formatDate(entry.created)}
+          </div>
 
-            <div class="entry-arrow">
-              →
-            </div>
+        </article>
 
-          </article>
+      `;
 
-        `;
-
-      })
-      .join("");
+    }).join("");
 
 }
 
 
+
 /* =========================================
-   OPEN A PARTICULAR ENTRY
+   READER
 ========================================= */
 
-function openEntry(id) {
+function openReader(id) {
 
   const entry =
     entries.find(
       item => item.id === id
     );
 
+
   if (!entry) return;
 
 
-  const modal =
-    document.getElementById("editorModal");
+  currentReaderId = id;
 
 
-  const title =
-    document.getElementById("editorTitle");
-
-  const input =
-    document.getElementById("entryTitle");
-
-  const textarea =
-    document.getElementById("entryContent");
+  document.getElementById(
+    "readerType"
+  ).textContent =
+    entry.type.toUpperCase();
 
 
-  currentType =
-    entry.type;
-
-  editingId =
-    entry.id;
-
-
-  title.textContent =
-    "Your Entry";
-
-  input.value =
+  document.getElementById(
+    "readerTitle"
+  ).textContent =
     entry.title;
 
-  textarea.value =
-    entry.content;
+
+  document.getElementById(
+    "readerDate"
+  ).textContent =
+    formatDate(entry.created);
 
 
-  modal.classList.add("show");
+  document.getElementById(
+    "readerText"
+  ).textContent =
+    entry.content || "";
+
+
+  document
+    .getElementById("readerModal")
+    .classList.add("show");
+
+
+  document.body.style.overflow =
+    "hidden";
 
 }
 
 
+
+function closeReader() {
+
+  document
+    .getElementById("readerModal")
+    .classList.remove("show");
+
+
+  document.body.style.overflow =
+    "";
+
+  currentReaderId = null;
+
+}
+
+
+
 /* =========================================
-   FORMAT DATE
+   EDIT FROM READER
 ========================================= */
 
-function formatDate(dateString) {
+function editCurrentEntry() {
 
-  const date =
-    new Date(dateString);
+  if (!currentReaderId) return;
 
 
-  return date.toLocaleDateString(
-    "en-US",
-    {
-      day: "numeric",
-      month: "short",
-      year: "numeric"
-    }
+  const entry =
+    entries.find(
+      item => item.id === currentReaderId
+    );
+
+
+  if (!entry) return;
+
+
+  closeReader();
+
+  openEditor(
+    entry.type,
+    entry.id
   );
 
 }
 
 
+
 /* =========================================
-   TODO RENDER
+   DELETE ENTRY
+========================================= */
+
+function deleteCurrentEntry() {
+
+  if (!currentReaderId) return;
+
+
+  const confirmed =
+    confirm(
+      "Delete this entry?"
+    );
+
+
+  if (!confirmed) return;
+
+
+  entries =
+    entries.filter(
+      item => item.id !== currentReaderId
+    );
+
+
+  localStorage.setItem(
+    "voidEntries",
+    JSON.stringify(entries)
+  );
+
+
+  closeReader();
+
+  renderAll();
+
+}
+
+
+
+/* =========================================
+   TODO EDITOR
+========================================= */
+
+function openTodoEditor() {
+
+  document
+    .getElementById("todoModal")
+    .classList.add("show");
+
+
+  document
+    .getElementById("todoInput")
+    .value = "";
+
+
+  setTimeout(() => {
+
+    document
+      .getElementById("todoInput")
+      .focus();
+
+  }, 100);
+
+}
+
+
+
+function closeTodoEditor() {
+
+  document
+    .getElementById("todoModal")
+    .classList.remove("show");
+
+}
+
+
+
+/* =========================================
+   SAVE TODO
+========================================= */
+
+function saveTodo() {
+
+  const input =
+    document.getElementById("todoInput");
+
+
+  const text =
+    input.value.trim();
+
+
+  if (!text) {
+
+    alert("Write a task first.");
+
+    return;
+  }
+
+
+  todos.unshift({
+
+    id:
+      Date.now().toString(),
+
+    text:
+      text,
+
+    completed:
+      false,
+
+    created:
+      new Date().toISOString()
+
+  });
+
+
+  localStorage.setItem(
+    "voidTodos",
+    JSON.stringify(todos)
+  );
+
+
+  closeTodoEditor();
+
+  renderTodos();
+
+}
+
+
+
+/* =========================================
+   RENDER TODO
 ========================================= */
 
 function renderTodos() {
 
   const container =
     document.getElementById("todoList");
+
 
   if (!container) return;
 
@@ -595,14 +629,14 @@ function renderTodos() {
 
     container.innerHTML = `
 
-      <div class="empty-state">
+      <div class="empty">
 
-        <div class="empty-icon">☑</div>
+        <div class="empty-symbol">✓</div>
 
-        <h3>No tasks yet</h3>
+        <h3>No tasks yet.</h3>
 
         <p>
-          Tap + to add your first task
+          Add something you want to accomplish.
         </p>
 
       </div>
@@ -614,47 +648,39 @@ function renderTodos() {
 
 
   container.innerHTML =
-    todos
-      .map(todo => {
+    todos.map(todo => `
 
-        return `
+      <div
+        class="todo-item
+        ${todo.completed ? "completed" : ""}"
+      >
 
-          <div
-            class="todo-item
-            ${todo.completed ? "completed" : ""}"
-          >
-
-            <button
-              class="todo-check"
-              onclick="toggleTodo(${todo.id})"
-            >
-              ✓
-            </button>
+        <button
+          class="todo-check"
+          onclick="toggleTodo('${todo.id}')"
+        >
+          ${todo.completed ? "✓" : ""}
+        </button>
 
 
-            <div
-              class="todo-text"
-              onclick="toggleTodo(${todo.id})"
-            >
-              ${escapeHTML(todo.text)}
-            </div>
+        <div class="todo-text">
+          ${escapeHTML(todo.text)}
+        </div>
 
 
-            <button
-              class="todo-delete"
-              onclick="deleteTodo(${todo.id})"
-            >
-              ×
-            </button>
+        <button
+          class="delete-task"
+          onclick="deleteTodo('${todo.id}')"
+        >
+          ×
+        </button>
 
-          </div>
+      </div>
 
-        `;
-
-      })
-      .join("");
+    `).join("");
 
 }
+
 
 
 /* =========================================
@@ -668,6 +694,7 @@ function toggleTodo(id) {
       item => item.id === id
     );
 
+
   if (!todo) return;
 
 
@@ -675,11 +702,16 @@ function toggleTodo(id) {
     !todo.completed;
 
 
-  saveTodos();
+  localStorage.setItem(
+    "voidTodos",
+    JSON.stringify(todos)
+  );
+
 
   renderTodos();
 
 }
+
 
 
 /* =========================================
@@ -690,54 +722,80 @@ function deleteTodo(id) {
 
   todos =
     todos.filter(
-      todo => todo.id !== id
+      item => item.id !== id
     );
 
 
-  saveTodos();
+  localStorage.setItem(
+    "voidTodos",
+    JSON.stringify(todos)
+  );
+
 
   renderTodos();
 
 }
 
 
+
 /* =========================================
-   DELETE ENTRY
+   DATE
 ========================================= */
 
-function deleteEntry(id) {
+function formatDate(date) {
 
-  entries =
-    entries.filter(
-      entry => entry.id !== id
-    );
+  const d =
+    new Date(date);
 
 
-  saveEntries();
-
-  renderAll();
-
-  closeEditor();
+  return d.toLocaleDateString(
+    undefined,
+    {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    }
+  );
 
 }
 
 
+
 /* =========================================
-   ESCAPE HTML
+   SECURITY
 ========================================= */
 
 function escapeHTML(text) {
 
-  if (!text) return "";
+  return String(text)
 
-  return text
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
+
 
 
 /* =========================================
@@ -746,126 +804,138 @@ function escapeHTML(text) {
 
 function toggleTheme() {
 
-  document.body.classList.toggle(
-    "light"
-  );
+  document.body.classList.toggle("light");
 
 
   const isLight =
-    document.body.classList.contains(
-      "light"
-    );
+    document.body.classList.contains("light");
 
 
   localStorage.setItem(
     "voidTheme",
-    isLight
-      ? "light"
-      : "dark"
+    isLight ? "light" : "dark"
   );
 
 }
 
 
-/* =========================================
-   LOAD THEME
-========================================= */
 
 function loadTheme() {
 
   const theme =
-    localStorage.getItem(
-      "voidTheme"
-    );
+    localStorage.getItem("voidTheme");
 
 
   if (theme === "light") {
 
-    document.body.classList.add(
-      "light"
-    );
+    document.body.classList.add("light");
 
   }
 
 }
 
 
+
 /* =========================================
-   DELETE EVERYTHING
+   CLEAR EVERYTHING
 ========================================= */
 
 function clearAllData() {
 
-  const confirmation =
+  const confirmed =
     confirm(
-      "Delete all your VOID entries and tasks?"
+      "This will delete all your entries and tasks. Continue?"
     );
 
 
-  if (!confirmation) return;
+  if (!confirmed) return;
 
 
   entries = [];
-
   todos = [];
 
 
-  saveEntries();
+  localStorage.removeItem(
+    "voidEntries"
+  );
 
-  saveTodos();
+  localStorage.removeItem(
+    "voidTodos"
+  );
 
 
   renderAll();
 
-
-  alert(
-    "All saved entries have been deleted."
-  );
-
 }
 
 
+
 /* =========================================
-   CLOSE MODAL WHEN CLICKING OUTSIDE
+   MODAL CLICK OUTSIDE
 ========================================= */
 
 document.addEventListener(
   "click",
-  event => {
+  function(event) {
 
-    const modal =
+    const editor =
       document.getElementById(
         "editorModal"
       );
 
+    const todoModal =
+      document.getElementById(
+        "todoModal"
+      );
+
 
     if (
-      event.target === modal
+      event.target === editor
     ) {
-
       closeEditor();
+    }
 
+
+    if (
+      event.target === todoModal
+    ) {
+      closeTodoEditor();
     }
 
   }
 );
 
 
+
 /* =========================================
-   ESC KEY
+   KEYBOARD
 ========================================= */
 
 document.addEventListener(
   "keydown",
-  event => {
+  function(event) {
 
-    if (
-      event.key === "Escape"
-    ) {
+    if (event.key === "Escape") {
 
       closeEditor();
+
+      closeTodoEditor();
+
+      closeReader();
 
     }
 
   }
 );
+
+
+
+/* =========================================
+   START APP
+========================================= */
+
+loadTheme();
+
+renderAll();
+
+showPage("home");
