@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -10,105 +12,187 @@
 
   <meta
     name="theme-color"
-    content="#080808"
+    content="#070707"
+  >
+
+  <meta
+    name="description"
+    content="VOID — a quiet personal space for your notes, thoughts, journals and ideas."
   >
 
   <title>VOID</title>
 
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 
+  <!-- Fonts -->
   <link
     href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap"
     rel="stylesheet"
   >
+
 </head>
+
 
 <body>
 
-  <!-- SIDEBAR -->
+
+  <!-- =====================================
+       SIDEBAR
+  ====================================== -->
 
   <aside class="sidebar">
 
     <div class="logo">
       VOID
-      <span>your quiet space</span>
+
+      <span>
+        your quiet space
+      </span>
     </div>
+
 
     <nav>
 
-      <button class="nav-btn active" onclick="showPage('home')">
+      <button
+        class="nav-btn active"
+        onclick="showPage('home')"
+      >
         <span>⌂</span>
         Home
       </button>
 
-      <button class="nav-btn" onclick="showPage('journal')">
+
+      <button
+        class="nav-btn"
+        onclick="showPage('journal')"
+      >
         <span>✎</span>
         Journal
       </button>
 
-      <button class="nav-btn" onclick="showPage('notes')">
+
+      <button
+        class="nav-btn"
+        onclick="showPage('notes')"
+      >
         <span>▤</span>
         Notes
       </button>
 
-      <button class="nav-btn" onclick="showPage('todo')">
+
+      <button
+        class="nav-btn"
+        onclick="showPage('todo')"
+      >
         <span>✓</span>
         To Do
       </button>
 
-      <button class="nav-btn" onclick="showPage('hobbies')">
+
+      <button
+        class="nav-btn"
+        onclick="showPage('hobbies')"
+      >
         <span>♡</span>
         Hobbies
       </button>
 
-      <button class="nav-btn" onclick="showPage('mood')">
+
+      <button
+        class="nav-btn"
+        onclick="showPage('mood')"
+      >
         <span>☾</span>
         Mood
       </button>
 
-      <button class="nav-btn" onclick="showPage('bookshelf')">
+
+      <button
+        class="nav-btn"
+        onclick="showPage('bookshelf')"
+      >
         <span>▥</span>
         Bookshelf
       </button>
 
-      <button class="nav-btn" onclick="showPage('settings')">
+
+      <button
+        class="nav-btn"
+        onclick="showPage('settings')"
+      >
         <span>⚙</span>
         Settings
       </button>
 
     </nav>
 
+
     <div class="sidebar-bottom">
-      <span>VOID</span>
-      <small>write • reflect • exist</small>
+
+      <span>
+        VOID
+      </span>
+
+      <small>
+        write • reflect • exist
+      </small>
+
     </div>
 
   </aside>
 
 
-  <!-- MOBILE HEADER -->
+
+  <!-- =====================================
+       MOBILE HEADER
+  ====================================== -->
 
   <header class="mobile-header">
-    <div class="mobile-logo">VOID</div>
-    <button onclick="toggleTheme()" class="theme-small">
+
+    <div class="mobile-logo">
+      VOID
+    </div>
+
+    <button
+      onclick="toggleTheme()"
+      class="theme-small"
+      aria-label="Change theme"
+    >
       ◐
     </button>
+
   </header>
 
 
-  <!-- MAIN -->
+
+  <!-- =====================================
+       MAIN CONTENT
+  ====================================== -->
 
   <main class="main">
 
 
-    <!-- HOME -->
+    <!-- ===================================
+         HOME
+    ==================================== -->
 
-    <section id="home" class="page active-page">
+    <section
+      id="home"
+      class="page active-page"
+    >
 
       <div class="hero">
 
         <div>
-          <p class="eyebrow">WELCOME TO YOUR SPACE</p>
+
+          <p class="eyebrow">
+            WELCOME TO YOUR SPACE
+          </p>
+
 
           <h1>
             Nothing here
@@ -116,81 +200,169 @@
             <span>until you write it.</span>
           </h1>
 
+
           <p class="hero-text">
             A quiet place for your thoughts,
             plans, moods, hobbies and little things.
           </p>
+
         </div>
 
       </div>
 
 
+
       <div class="home-grid">
+
 
         <div
           class="home-card"
           onclick="showPage('journal')"
         >
-          <span class="card-number">01</span>
-          <div class="card-icon">✎</div>
-          <h2>Journal</h2>
-          <p>Write about your day and your thoughts.</p>
+
+          <span class="card-number">
+            01
+          </span>
+
+          <div class="card-icon">
+            ✎
+          </div>
+
+          <h2>
+            Journal
+          </h2>
+
+          <p>
+            Write about your day and your thoughts.
+          </p>
+
         </div>
+
 
 
         <div
           class="home-card"
           onclick="showPage('notes')"
         >
-          <span class="card-number">02</span>
-          <div class="card-icon">▤</div>
-          <h2>Notes</h2>
-          <p>Keep anything you want to remember.</p>
+
+          <span class="card-number">
+            02
+          </span>
+
+          <div class="card-icon">
+            ▤
+          </div>
+
+          <h2>
+            Notes
+          </h2>
+
+          <p>
+            Keep anything you want to remember.
+          </p>
+
         </div>
+
 
 
         <div
           class="home-card"
           onclick="showPage('todo')"
         >
-          <span class="card-number">03</span>
-          <div class="card-icon">✓</div>
-          <h2>To Do</h2>
-          <p>Keep track of things you want to do.</p>
+
+          <span class="card-number">
+            03
+          </span>
+
+          <div class="card-icon">
+            ✓
+          </div>
+
+          <h2>
+            To Do
+          </h2>
+
+          <p>
+            Keep track of things you want to do.
+          </p>
+
         </div>
+
 
 
         <div
           class="home-card"
           onclick="showPage('hobbies')"
         >
-          <span class="card-number">04</span>
-          <div class="card-icon">♡</div>
-          <h2>Hobbies</h2>
-          <p>Keep your interests and creative ideas.</p>
+
+          <span class="card-number">
+            04
+          </span>
+
+          <div class="card-icon">
+            ♡
+          </div>
+
+          <h2>
+            Hobbies
+          </h2>
+
+          <p>
+            Keep your interests and creative ideas.
+          </p>
+
         </div>
+
 
 
         <div
           class="home-card"
           onclick="showPage('mood')"
         >
-          <span class="card-number">05</span>
-          <div class="card-icon">☾</div>
-          <h2>Mood</h2>
-          <p>Write down how you're feeling.</p>
+
+          <span class="card-number">
+            05
+          </span>
+
+          <div class="card-icon">
+            ☾
+          </div>
+
+          <h2>
+            Mood
+          </h2>
+
+          <p>
+            Write down how you're feeling.
+          </p>
+
         </div>
+
 
 
         <div
           class="home-card"
           onclick="showPage('bookshelf')"
         >
-          <span class="card-number">06</span>
-          <div class="card-icon">▥</div>
-          <h2>Bookshelf</h2>
-          <p>Keep track of books you want to remember.</p>
+
+          <span class="card-number">
+            06
+          </span>
+
+          <div class="card-icon">
+            ▥
+          </div>
+
+          <h2>
+            Bookshelf
+          </h2>
+
+          <p>
+            Keep track of books you want to remember.
+          </p>
+
         </div>
+
 
       </div>
 
@@ -198,16 +370,29 @@
 
 
 
-    <!-- JOURNAL -->
+    <!-- ===================================
+         JOURNAL
+    ==================================== -->
 
-    <section id="journal" class="page">
+    <section
+      id="journal"
+      class="page"
+    >
 
       <div class="page-top">
 
         <div>
-          <p class="eyebrow">YOUR THOUGHTS</p>
-          <h1>Journal</h1>
+
+          <p class="eyebrow">
+            YOUR THOUGHTS
+          </p>
+
+          <h1>
+            Journal
+          </h1>
+
         </div>
+
 
         <button
           class="add-button"
@@ -218,6 +403,7 @@
 
       </div>
 
+
       <div
         id="journalList"
         class="entry-grid"
@@ -227,16 +413,29 @@
 
 
 
-    <!-- NOTES -->
+    <!-- ===================================
+         NOTES
+    ==================================== -->
 
-    <section id="notes" class="page">
+    <section
+      id="notes"
+      class="page"
+    >
 
       <div class="page-top">
 
         <div>
-          <p class="eyebrow">YOUR SPACE</p>
-          <h1>Notes</h1>
+
+          <p class="eyebrow">
+            YOUR SPACE
+          </p>
+
+          <h1>
+            Notes
+          </h1>
+
         </div>
+
 
         <button
           class="add-button"
@@ -247,6 +446,7 @@
 
       </div>
 
+
       <div
         id="notesList"
         class="entry-grid"
@@ -256,16 +456,29 @@
 
 
 
-    <!-- TO DO -->
+    <!-- ===================================
+         TO DO
+    ==================================== -->
 
-    <section id="todo" class="page">
+    <section
+      id="todo"
+      class="page"
+    >
 
       <div class="page-top">
 
         <div>
-          <p class="eyebrow">THINGS TO DO</p>
-          <h1>To Do</h1>
+
+          <p class="eyebrow">
+            THINGS TO DO
+          </p>
+
+          <h1>
+            To Do
+          </h1>
+
         </div>
+
 
         <button
           class="add-button"
@@ -276,6 +489,7 @@
 
       </div>
 
+
       <div
         id="todoList"
         class="todo-list"
@@ -285,16 +499,29 @@
 
 
 
-    <!-- HOBBIES -->
+    <!-- ===================================
+         HOBBIES
+    ==================================== -->
 
-    <section id="hobbies" class="page">
+    <section
+      id="hobbies"
+      class="page"
+    >
 
       <div class="page-top">
 
         <div>
-          <p class="eyebrow">THINGS YOU LOVE</p>
-          <h1>Hobbies</h1>
+
+          <p class="eyebrow">
+            THINGS YOU LOVE
+          </p>
+
+          <h1>
+            Hobbies
+          </h1>
+
         </div>
+
 
         <button
           class="add-button"
@@ -305,6 +532,7 @@
 
       </div>
 
+
       <div
         id="hobbiesList"
         class="entry-grid"
@@ -314,16 +542,29 @@
 
 
 
-    <!-- MOOD -->
+    <!-- ===================================
+         MOOD
+    ==================================== -->
 
-    <section id="mood" class="page">
+    <section
+      id="mood"
+      class="page"
+    >
 
       <div class="page-top">
 
         <div>
-          <p class="eyebrow">HOW ARE YOU FEELING?</p>
-          <h1>Mood</h1>
+
+          <p class="eyebrow">
+            YOUR FEELINGS
+          </p>
+
+          <h1>
+            Mood
+          </h1>
+
         </div>
+
 
         <button
           class="add-button"
@@ -334,6 +575,7 @@
 
       </div>
 
+
       <div
         id="moodList"
         class="entry-grid"
@@ -343,16 +585,29 @@
 
 
 
-    <!-- BOOKSHELF -->
+    <!-- ===================================
+         BOOKSHELF
+    ==================================== -->
 
-    <section id="bookshelf" class="page">
+    <section
+      id="bookshelf"
+      class="page"
+    >
 
       <div class="page-top">
 
         <div>
-          <p class="eyebrow">YOUR READING SPACE</p>
-          <h1>Bookshelf</h1>
+
+          <p class="eyebrow">
+            YOUR READING SPACE
+          </p>
+
+          <h1>
+            Bookshelf
+          </h1>
+
         </div>
+
 
         <button
           class="add-button"
@@ -363,6 +618,7 @@
 
       </div>
 
+
       <div
         id="bookshelfList"
         class="entry-grid"
@@ -372,15 +628,27 @@
 
 
 
-    <!-- SETTINGS -->
+    <!-- ===================================
+         SETTINGS
+    ==================================== -->
 
-    <section id="settings" class="page">
+    <section
+      id="settings"
+      class="page"
+    >
 
       <div class="page-top">
 
         <div>
-          <p class="eyebrow">CUSTOMIZE YOUR SPACE</p>
-          <h1>Settings</h1>
+
+          <p class="eyebrow">
+            CUSTOMIZE YOUR SPACE
+          </p>
+
+          <h1>
+            Settings
+          </h1>
+
         </div>
 
       </div>
@@ -388,12 +656,21 @@
 
       <div class="settings-box">
 
+
         <div class="setting-row">
 
           <div>
-            <h3>Appearance</h3>
-            <p>Switch between dark and light mode.</p>
+
+            <h3>
+              Appearance
+            </h3>
+
+            <p>
+              Switch between dark and light mode.
+            </p>
+
           </div>
+
 
           <button
             class="setting-button"
@@ -405,14 +682,39 @@
         </div>
 
 
+
+        <div class="setting-row">
+
+          <div>
+
+            <h3>
+              Your Data
+            </h3>
+
+            <p>
+              Your entries are saved in this browser.
+            </p>
+
+          </div>
+
+        </div>
+
+
+
         <div class="setting-row danger">
 
           <div>
-            <h3>Clear Everything</h3>
+
+            <h3>
+              Clear Everything
+            </h3>
+
             <p>
-              Delete all notes, journals, tasks and entries.
+              Delete all your notes, journals and tasks.
             </p>
+
           </div>
+
 
           <button
             class="setting-button danger-button"
@@ -423,6 +725,7 @@
 
         </div>
 
+
       </div>
 
     </section>
@@ -431,7 +734,9 @@
 
 
 
-  <!-- ENTRY EDITOR -->
+  <!-- =====================================
+       ENTRY EDITOR
+  ====================================== -->
 
   <div
     id="editorModal"
@@ -440,12 +745,15 @@
 
     <div class="modal-box">
 
+
       <button
         class="close-btn"
         onclick="closeEditor()"
+        aria-label="Close"
       >
         ×
       </button>
+
 
       <p
         id="editorLabel"
@@ -453,6 +761,7 @@
       >
         NEW ENTRY
       </p>
+
 
       <h2 id="editorTitle">
         Write something
@@ -464,6 +773,7 @@
         type="text"
         placeholder="Title..."
         maxlength="100"
+        autocomplete="off"
       >
 
 
@@ -479,6 +789,7 @@
           Your space. Your words.
         </span>
 
+
         <button
           class="save-button"
           onclick="saveEntry()"
@@ -488,13 +799,16 @@
 
       </div>
 
+
     </div>
 
   </div>
 
 
 
-  <!-- TODO EDITOR -->
+  <!-- =====================================
+       TODO EDITOR
+  ====================================== -->
 
   <div
     id="todoModal"
@@ -503,31 +817,41 @@
 
     <div class="modal-box small-box">
 
+
       <button
         class="close-btn"
         onclick="closeTodoEditor()"
+        aria-label="Close"
       >
         ×
       </button>
+
 
       <p class="eyebrow">
         NEW TASK
       </p>
 
-      <h2>Add something to do</h2>
+
+      <h2>
+        Add something to do
+      </h2>
+
 
       <input
         id="todoInput"
         type="text"
         placeholder="What do you need to do?"
         maxlength="150"
+        autocomplete="off"
       >
+
 
       <div class="modal-bottom">
 
         <span>
           One thing at a time.
         </span>
+
 
         <button
           class="save-button"
@@ -538,20 +862,25 @@
 
       </div>
 
+
     </div>
 
   </div>
 
 
 
-  <!-- READER -->
+  <!-- =====================================
+       FULL PAGE READER
+  ====================================== -->
 
   <div
     id="readerModal"
     class="reader-modal"
   >
 
+
     <div class="reader-top">
+
 
       <button
         onclick="closeReader()"
@@ -560,78 +889,166 @@
         ← Back
       </button>
 
-      <button
-        onclick="deleteCurrentEntry()"
-        class="reader-delete"
-      >
-        Delete
-      </button>
+
+      <div class="reader-actions">
+
+        <button
+          onclick="editCurrentEntry()"
+          class="reader-edit"
+        >
+          Edit
+        </button>
+
+
+        <button
+          onclick="deleteCurrentEntry()"
+          class="reader-delete"
+        >
+          Delete
+        </button>
+
+      </div>
+
 
     </div>
 
 
+
     <article class="reader">
+
 
       <p
         id="readerType"
         class="eyebrow"
       >
-        JOURNAL
+        ENTRY
       </p>
 
-      <h1 id="readerTitle"></h1>
+
+      <h1
+        id="readerTitle"
+      ></h1>
+
 
       <p
         id="readerDate"
         class="reader-date"
       ></p>
 
+
       <div class="reader-divider"></div>
+
 
       <div
         id="readerText"
         class="reader-text"
       ></div>
 
+
     </article>
+
 
   </div>
 
 
 
-  <!-- MOBILE NAV -->
+  <!-- =====================================
+       MOBILE NAVIGATION
+  ====================================== -->
 
   <nav class="mobile-nav">
 
-    <button onclick="showPage('home')">
-      ⌂
-      <span>Home</span>
+
+    <button
+      onclick="showPage('home')"
+    >
+
+      <span class="mobile-nav-icon">
+        ⌂
+      </span>
+
+      <span>
+        Home
+      </span>
+
     </button>
 
-    <button onclick="showPage('journal')">
-      ✎
-      <span>Journal</span>
+
+
+    <button
+      onclick="showPage('journal')"
+    >
+
+      <span class="mobile-nav-icon">
+        ✎
+      </span>
+
+      <span>
+        Journal
+      </span>
+
     </button>
 
-    <button onclick="showPage('notes')">
-      ▤
-      <span>Notes</span>
+
+
+    <button
+      onclick="showPage('notes')"
+    >
+
+      <span class="mobile-nav-icon">
+        ▤
+      </span>
+
+      <span>
+        Notes
+      </span>
+
     </button>
 
-    <button onclick="showPage('todo')">
-      ✓
-      <span>To Do</span>
+
+
+    <button
+      onclick="showPage('todo')"
+    >
+
+      <span class="mobile-nav-icon">
+        ✓
+      </span>
+
+      <span>
+        To Do
+      </span>
+
     </button>
 
-    <button onclick="showPage('settings')">
-      ⚙
-      <span>More</span>
+
+
+    <button
+      onclick="showPage('settings')"
+    >
+
+      <span class="mobile-nav-icon">
+        ⚙
+      </span>
+
+      <span>
+        More
+      </span>
+
     </button>
+
 
   </nav>
 
 
+
+  <!-- =====================================
+       JAVASCRIPT
+  ====================================== -->
+
   <script src="script.js"></script>
 
+
 </body>
+
 </html>
