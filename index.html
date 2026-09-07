@@ -903,4 +903,165 @@
 
                 <div>
 
-        
+        <span
+
+<
+
+id="readerCategory"
+
+class="reader-category"
+
+</span>
+
+<span
+
+>
+
+id="readerDate"
+
+class="reader-date"
+
+</span>
+
+</div>
+
+<button
+
+onclick="closeReader()"
+
+class="close-button"
+
+</button>
+
+</div>
+
+<h1 id="readerTitle">
+
+</h1>
+
+<div
+
+<
+
+id="readerContent"
+
+class="reader-content"
+
+</div>
+
+<div class="reader-actions">
+
+<button
+
+onclick="editCurrentEntry()"
+
+class="edit-button"
+
+Edit
+
+</button>
+
+<button
+
+onclick="deleteCurrentEntry()"
+
+class="delete-button"
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+    </div>
+
+MOBILE NAVIGATION
+
+===
+
+<nav class="mobile-nav">
+
+<button
+
+onclick="goHome()"
+
+class="mobile-nav-button active"
+
+<span></span>
+
+<small>Home</small>
+
+</button>
+
+<button
+
+onclick="openSection('journal')"
+
+class="mobile-nav-button"
+
+<span></span>
+
+<small>Journal</small>
+
+</button>
+
+<button
+
+onclick="openSection('notes')"
+
+class="mobile-nav-button"
+
+<span></span>
+
+<small>Notes</small>
+
+</button>
+
+<button
+
+onclick="openSection('todo')"
+
+class="mobile-nav-button"
+
+<span></span>
+
+<small>To Do</small>
+
+</button>
+
+<button
+
+>
+
+onclick="openSection('more')"
+
+class="mobile-nav-button"
+
+<span> </span>
+
+<small>More</small>
+
+</button>
+
+</nav>
+
+</div>
+<script src="script.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+        navigator.serviceWorker.register("sw.js")
+            .catch(function(error) {
+                console.log(
+                    "Service worker registration failed:",
+                    error
+                );
+            });
+    });
+}
+</script>
+
+</body>
+</html>
