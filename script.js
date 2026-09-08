@@ -1,834 +1,1190 @@
-/* =========================================================
-   VOID — Personal Notes & Journal App
-   ========================================================= */
-
-let entries = [];
-let todos = [];
-
-let currentType = "";
-let editingId = null;
-let currentReaderId = null;
+/* =====================================================
+   MY LITTLE NOTES
+   MAIN JAVASCRIPT
+===================================================== */
 
 
-/* =========================================================
-   STORAGE
-   ========================================================= */
+/* =====================================================
+   1. APP DATA
+===================================================== */
 
-function loadData() {
-  try {
-    entries = JSON.parse(localStorage.getItem("voidEntries")) || [];
-    todos = JSON.parse(localStorage.getItem("voidTodos")) || [];
+let currentSection = "home";
 
-    if (!Array.isArray(entries)) entries = [];
-    if (!Array.isArray(todos)) todos = [];
-  } catch (error) {
-    entries = [];
-    todos = [];
-  }
-}
+let editingSection = "";
 
-function saveEntries() {
-  localStorage.setItem("voidEntries", JSON.stringify(entries));
-}
+let entries = JSON.parse(
+    localStorage.getItem("myLittleNotesEntries")
+) || {};
 
-function saveTodos() {
-  localStorage.setItem("voidTodos", JSON.stringify(todos));
-}
+let todos = JSON.parse(
+    localStorage.getItem("myLittleNotesTodos")
+) || [];
+
+let moods = JSON.parse(
+    localStorage.getItem("myLittleNotesMoods")
+) || [];
 
 
-/* =========================================================
-   ID GENERATOR
-   ========================================================= */
+/* =====================================================
+   2. SECTION NAMES
+===================================================== */
 
-function createId() {
-  if (
-    typeof crypto !== "undefined" &&
-    typeof crypto.randomUUID === "function"
-  ) {
-    return crypto.randomUUID();
-  }
+const sectionNames = {
 
-  return Date.now().toString() + Math.random().toString(36).slice(2);
-}
+    journal: "Journal",
+
+    notes: "Notes",
+
+    hobbies: "Hobbies",
+
+    bookshelf: "Bookshelf",
+
+    gratitude: "Gratitude",
+
+    ideas: "Ideas",
+
+    planner: "Planner"
+
+};
 
 
-/* =========================================================
-   PAGE NAVIGATION
-   ========================================================= */
+/* =====================================================
+   3. INITIALIZE APP
+===================================================== */
 
-function showPage(pageId) {
-  const pages = document.querySelectorAll(".page");
+document.addEventListener("DOMContentLoaded", function () {
 
-  pages.forEach(page => {
-    page.classList.remove("active");
-  });
+    showTodayDate();
 
-  const selectedPage = document.getElementById(pageId);
+    loadAllEntries();
 
-  if (selectedPage) {
-    selectedPage.classList.add("active");
-  }
+    loadTodos();
 
-  // Update sidebar buttons
-  document.querySelectorAll("[data-page]").forEach(button => {
-    button.classList.remove("active");
+    loadMoods();
 
-    if (button.dataset.page === pageId) {
-      button.classList.add("active");
+    loadTheme();
+
+});
+
+
+/* =====================================================
+   4. SHOW SECTION
+===================================================== */
+
+function showSection(sectionName) {
+
+    currentSection = sectionName;
+
+
+    /* Hide every page */
+
+    const sections =
+        document.querySelectorAll(".page-section");
+
+    sections.forEach(function (section) {
+
+        section.classList.remove("active-section");
+
+    });
+
+
+    /* Show selected page */
+
+    const selectedSection =
+        document.getElementById(sectionName);
+
+    if (selectedSection) {
+
+        selectedSection.classList.add("active-section");
+
     }
-  });
 
-  // Update mobile navigation
-  document.querySelectorAll("[data-mobile-page]").forEach(button => {
-    button.classList.remove("active");
 
-    if (button.dataset.mobilePage === pageId) {
-      button.classList.add("active");
+    /* Update sidebar */
+
+    const navItems =
+        document.querySelectorAll(".nav-item");
+
+    navItems.forEach(function (item) {
+
+        item.classList.remove("active");
+
+    });
+
+
+    navItems.forEach(function (item) {
+
+        const onclickValue =
+            item.getAttribute("onclick");
+
+        if (
+            onclickValue &&
+            onclickValue.includes(
+                "'" + sectionName + "'"
+            )
+        ) {
+
+            item.classList.add("active");
+
+        }
+
+    });
+
+
+    /* Close mobile sidebar */
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    if (sidebar) {
+
+        sidebar.classList.remove("open");
+
     }
-  });
 
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
 }
 
 
-/* =========================================================
-   ENTRY EDITOR
-   ========================================================= */
+/* =====================================================
+   5. MOBILE SIDEBAR
+===================================================== */
 
-function openEditor(type, id = null) {
-  const modal = document.getElementById("editorModal");
-  const titleInput = document.getElementById("entryTitle");
-  const contentInput = document.getElementById("entryContent");
-  const label = document.getElementById("editorLabel");
+function toggleSidebar() {
 
-  if (!modal || !titleInput || !contentInput) return;
+    const sidebar =
+        document.getElementById("sidebar");
 
-  currentType = type;
-  editingId = id;
+    sidebar.classList.toggle("open");
 
-  if (id) {
-    const entry = entries.find(item => item.id === id);
+}
+
+
+/* =====================================================
+   6. TODAY'S DATE
+===================================================== */
+
+function showTodayDate() {
+
+    const dateElement =
+        document.getElementById("todayDate");
+
+    if (!dateElement) return;
+
+
+    const today = new Date();
+
+
+    const options = {
+
+        weekday: "short",
+
+        day: "numeric",
+
+        month: "short",
+
+        year: "numeric"
+
+    };
+
+
+    dateElement.textContent =
+        today.toLocaleDateString(
+            "en-US",
+            options
+        );
+
+}
+
+
+/* =====================================================
+   7. OPEN WRITING EDITOR
+===================================================== */
+
+function openEditor(sectionName) {
+
+    editingSection = sectionName;
+
+
+    const modal =
+        document.getElementById("editorModal");
+
+    const sectionTitle =
+        document.getElementById(
+            "editorSectionName"
+        );
+
+
+    if (sectionTitle) {
+
+        sectionTitle.textContent =
+            sectionNames[sectionName] ||
+            "New Entry";
+
+    }
+
+
+    /* IMPORTANT:
+       Start with completely empty fields */
+
+    document.getElementById(
+        "entryTitle"
+    ).value = "";
+
+
+    document.getElementById(
+        "entryContent"
+    ).value = "";
+
+
+    modal.classList.add("show");
+
+
+    /* Put cursor in title */
+
+    setTimeout(function () {
+
+        document.getElementById(
+            "entryTitle"
+        ).focus();
+
+    }, 100);
+
+}
+
+
+/* =====================================================
+   8. CLOSE EDITOR
+===================================================== */
+
+function closeEditor() {
+
+    const modal =
+        document.getElementById("editorModal");
+
+    modal.classList.remove("show");
+
+
+    document.getElementById(
+        "entryTitle"
+    ).value = "";
+
+
+    document.getElementById(
+        "entryContent"
+    ).value = "";
+
+}
+
+
+/* =====================================================
+   9. SAVE ENTRY
+===================================================== */
+
+function saveEntry() {
+
+    const titleInput =
+        document.getElementById("entryTitle");
+
+    const contentInput =
+        document.getElementById("entryContent");
+
+
+    const title =
+        titleInput.value.trim();
+
+    const content =
+        contentInput.value.trim();
+
+
+    /* Don't save completely empty entries */
+
+    if (!title && !content) {
+
+        alert("Write something first ♡");
+
+        return;
+
+    }
+
+
+    /* If no title is entered,
+       give the entry a simple title */
+
+    let finalTitle = title;
+
+    if (!finalTitle) {
+
+        finalTitle = "Untitled";
+
+    }
+
+
+    /* Create section if it doesn't exist */
+
+    if (!entries[editingSection]) {
+
+        entries[editingSection] = [];
+
+    }
+
+
+    const newEntry = {
+
+        id: Date.now(),
+
+        title: finalTitle,
+
+        content: content,
+
+        date: new Date().toISOString()
+
+    };
+
+
+    /* Add newest entry at the beginning */
+
+    entries[editingSection].unshift(
+        newEntry
+    );
+
+
+    /* Save */
+
+    localStorage.setItem(
+        "myLittleNotesEntries",
+        JSON.stringify(entries)
+    );
+
+
+    closeEditor();
+
+
+    loadEntries(editingSection);
+
+
+    /* Open section */
+
+    showSection(editingSection);
+
+}
+
+
+/* =====================================================
+   10. LOAD ALL ENTRIES
+===================================================== */
+
+function loadAllEntries() {
+
+    Object.keys(sectionNames).forEach(
+        function (sectionName) {
+
+            loadEntries(sectionName);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   11. LOAD ENTRIES FOR A SECTION
+===================================================== */
+
+function loadEntries(sectionName) {
+
+    const container =
+        document.getElementById(
+            sectionName + "Entries"
+        );
+
+
+    if (!container) return;
+
+
+    container.innerHTML = "";
+
+
+    const sectionEntries =
+        entries[sectionName] || [];
+
+
+    /* Empty state */
+
+    if (sectionEntries.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    ♡
+                </div>
+
+                <h3>
+                    Nothing here yet
+                </h3>
+
+                <p>
+                    Tap + to create your first entry.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* Create cards */
+
+    sectionEntries.forEach(
+        function (entry, index) {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "entry-card";
+
+
+            const number =
+                document.createElement("div");
+
+            number.className =
+                "entry-number";
+
+            number.textContent =
+                index + 1;
+
+
+            const info =
+                document.createElement("div");
+
+            info.className =
+                "entry-info";
+
+
+            const title =
+                document.createElement("h3");
+
+            title.textContent =
+                entry.title;
+
+
+            const date =
+                document.createElement("div");
+
+            date.className =
+                "entry-date";
+
+            date.textContent =
+                formatDate(entry.date);
+
+
+            const preview =
+                document.createElement("div");
+
+            preview.className =
+                "entry-preview";
+
+            preview.textContent =
+                entry.content ||
+                "No text written yet";
+
+
+            info.appendChild(title);
+
+            info.appendChild(date);
+
+            info.appendChild(preview);
+
+
+            const openButton =
+                document.createElement("button");
+
+            openButton.className =
+                "entry-open";
+
+            openButton.innerHTML =
+                "→";
+
+
+            openButton.onclick =
+                function () {
+
+                    openEntry(
+                        sectionName,
+                        entry.id
+                    );
+
+                };
+
+
+            card.appendChild(number);
+
+            card.appendChild(info);
+
+            card.appendChild(openButton);
+
+
+            /* Clicking the card also opens it */
+
+            card.addEventListener(
+                "click",
+                function (event) {
+
+                    if (
+                        event.target !==
+                        openButton
+                    ) {
+
+                        openEntry(
+                            sectionName,
+                            entry.id
+                        );
+
+                    }
+
+                }
+            );
+
+
+            container.appendChild(card);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   12. FORMAT DATE
+===================================================== */
+
+function formatDate(dateString) {
+
+    const date =
+        new Date(dateString);
+
+
+    const options = {
+
+        day: "numeric",
+
+        month: "short",
+
+        year: "numeric"
+
+    };
+
+
+    return date.toLocaleDateString(
+        "en-US",
+        options
+    );
+
+}
+
+
+/* =====================================================
+   13. OPEN SAVED ENTRY
+===================================================== */
+
+function openEntry(
+    sectionName,
+    entryId
+) {
+
+    const sectionEntries =
+        entries[sectionName] || [];
+
+
+    const entry =
+        sectionEntries.find(
+            function (item) {
+
+                return item.id === entryId;
+
+            }
+        );
+
 
     if (!entry) return;
 
-    titleInput.value = entry.title || "";
-    contentInput.value = entry.content || "";
 
-    if (label) {
-      label.textContent = "EDIT " + type.toUpperCase();
-    }
-  } else {
-    titleInput.value = "";
-    contentInput.value = "";
+    document.getElementById(
+        "viewTitle"
+    ).textContent = entry.title;
 
-    if (label) {
-      label.textContent = "NEW " + type.toUpperCase();
-    }
-  }
 
-  modal.classList.add("show");
-  document.body.classList.add("modal-open");
+    document.getElementById(
+        "viewDate"
+    ).textContent =
+        formatDate(entry.date);
 
-  setTimeout(() => {
-    titleInput.focus();
-  }, 100);
+
+    document.getElementById(
+        "viewContent"
+    ).textContent =
+        entry.content;
+
+
+    const modal =
+        document.getElementById("viewModal");
+
+
+    modal.classList.add("show");
+
 }
 
 
-function closeEditor() {
-  const modal = document.getElementById("editorModal");
+/* =====================================================
+   14. CLOSE SAVED ENTRY
+===================================================== */
 
-  if (modal) {
+function closeView() {
+
+    const modal =
+        document.getElementById("viewModal");
+
     modal.classList.remove("show");
-  }
 
-  document.body.classList.remove("modal-open");
-
-  editingId = null;
 }
 
 
-/* =========================================================
-   SAVE NOTE / JOURNAL / HOBBY / MOOD / BOOK
-   ========================================================= */
+/* =====================================================
+   15. CLOSE MODALS WHEN CLICKING OUTSIDE
+===================================================== */
 
-function saveEntry() {
-  const titleInput = document.getElementById("entryTitle");
-  const contentInput = document.getElementById("entryContent");
+document.addEventListener(
+    "click",
+    function (event) {
 
-  if (!titleInput || !contentInput) return;
+        const editorModal =
+            document.getElementById(
+                "editorModal"
+            );
 
-  const title = titleInput.value.trim();
-  const content = contentInput.value.trim();
+        const viewModal =
+            document.getElementById(
+                "viewModal"
+            );
 
-  if (!title && !content) {
-    alert("Write something first.");
-    return;
-  }
 
-  const now = new Date().toISOString();
+        if (
+            event.target === editorModal
+        ) {
 
-  // EDIT EXISTING ENTRY
-  if (editingId) {
-    const index = entries.findIndex(entry => entry.id === editingId);
+            closeEditor();
 
-    if (index !== -1) {
-      entries[index] = {
-        ...entries[index],
-        title: title || "Untitled",
-        content: content,
-        updatedAt: now
-      };
+        }
+
+
+        if (
+            event.target === viewModal
+        ) {
+
+            closeView();
+
+        }
+
     }
-  }
+);
 
-  // CREATE NEW ENTRY
-  else {
-    entries.unshift({
-      id: createId(),
-      type: currentType,
-      title: title || "Untitled",
-      content: content,
-      createdAt: now,
-      updatedAt: now
-    });
-  }
 
-  saveEntries();
+/* =====================================================
+   16. TODO LIST
+===================================================== */
 
-  closeEditor();
+function addTodo() {
 
-  renderAll();
+    const text =
+        prompt("What do you want to do?");
 
-  if (currentType) {
-    showPage(currentType);
-  }
+
+    if (!text || !text.trim()) {
+
+        return;
+
+    }
+
+
+    const newTodo = {
+
+        id: Date.now(),
+
+        text: text.trim(),
+
+        completed: false
+
+    };
+
+
+    todos.push(newTodo);
+
+
+    saveTodos();
+
+    loadTodos();
+
 }
 
 
-/* =========================================================
-   RENDER EVERYTHING
-   ========================================================= */
+/* =====================================================
+   17. SAVE TODOS
+===================================================== */
 
-function renderAll() {
-  renderEntries("journal", "journalList");
-  renderEntries("notes", "notesList");
-  renderEntries("hobbies", "hobbiesList");
-  renderEntries("mood", "moodList");
-  renderEntries("bookshelf", "bookshelfList");
+function saveTodos() {
 
-  renderTodos();
-
-  updateHomeStats();
-}
-
-
-/* =========================================================
-   RENDER ENTRIES
-   ========================================================= */
-
-function renderEntries(type, containerId) {
-  const container = document.getElementById(containerId);
-
-  if (!container) return;
-
-  const filteredEntries = entries.filter(entry => entry.type === type);
-
-  if (filteredEntries.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-symbol">✦</div>
-        <h3>Nothing here yet</h3>
-        <p>Your space is waiting for you to write something.</p>
-      </div>
-    `;
-
-    return;
-  }
-
-  container.innerHTML = filteredEntries
-    .map(entry => {
-      const preview = getPreview(entry.content);
-
-      return `
-        <article
-          class="entry-card"
-          data-entry-id="${escapeHTML(entry.id)}"
-          tabindex="0"
-        >
-          <div class="entry-card-top">
-            <span class="entry-type">
-              ${escapeHTML(entry.type)}
-            </span>
-
-            <span class="entry-date">
-              ${formatDate(entry.updatedAt || entry.createdAt)}
-            </span>
-          </div>
-
-          <h3>
-            ${escapeHTML(entry.title || "Untitled")}
-          </h3>
-
-          <p>
-            ${escapeHTML(preview)}
-          </p>
-
-          <span class="read-more">
-            Open →
-          </span>
-        </article>
-      `;
-    })
-    .join("");
-
-  container.querySelectorAll(".entry-card").forEach(card => {
-    card.addEventListener("click", () => {
-      openReader(card.dataset.entryId);
-    });
-
-    card.addEventListener("keydown", event => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openReader(card.dataset.entryId);
-      }
-    });
-  });
-}
-
-
-/* =========================================================
-   ENTRY PREVIEW
-   ========================================================= */
-
-function getPreview(text) {
-  if (!text) {
-    return "No words written yet.";
-  }
-
-  const cleanText = text.replace(/\s+/g, " ").trim();
-
-  if (cleanText.length <= 150) {
-    return cleanText;
-  }
-
-  return cleanText.slice(0, 150) + "…";
-}
-
-
-/* =========================================================
-   FULL PAGE READER
-   ========================================================= */
-
-function openReader(id) {
-  const entry = entries.find(item => item.id === id);
-
-  if (!entry) return;
-
-  currentReaderId = id;
-
-  const modal = document.getElementById("readerModal");
-
-  const typeElement = document.getElementById("readerType");
-  const titleElement = document.getElementById("readerTitle");
-  const dateElement = document.getElementById("readerDate");
-  const textElement = document.getElementById("readerText");
-
-  if (!modal) return;
-
-  if (typeElement) {
-    typeElement.textContent = entry.type.toUpperCase();
-  }
-
-  if (titleElement) {
-    titleElement.textContent = entry.title || "Untitled";
-  }
-
-  if (dateElement) {
-    dateElement.textContent = formatDate(
-      entry.updatedAt || entry.createdAt
+    localStorage.setItem(
+        "myLittleNotesTodos",
+        JSON.stringify(todos)
     );
-  }
 
-  if (textElement) {
-    textElement.textContent = entry.content || "";
-  }
-
-  modal.classList.add("show");
-  document.body.classList.add("modal-open");
 }
 
 
-function closeReader() {
-  const modal = document.getElementById("readerModal");
+/* =====================================================
+   18. LOAD TODOS
+===================================================== */
 
-  if (modal) {
-    modal.classList.remove("show");
-  }
+function loadTodos() {
 
-  document.body.classList.remove("modal-open");
-
-  currentReaderId = null;
-}
-
-
-/* =========================================================
-   EDIT CURRENT ENTRY
-   ========================================================= */
-
-function editCurrentEntry() {
-  if (!currentReaderId) return;
-
-  const entry = entries.find(item => item.id === currentReaderId);
-
-  if (!entry) return;
-
-  closeReader();
-
-  setTimeout(() => {
-    openEditor(entry.type, entry.id);
-  }, 100);
-}
+    const container =
+        document.getElementById(
+            "todoList"
+        );
 
 
-/* =========================================================
-   DELETE CURRENT ENTRY
-   ========================================================= */
-
-function deleteCurrentEntry() {
-  if (!currentReaderId) return;
-
-  const entry = entries.find(item => item.id === currentReaderId);
-
-  if (!entry) return;
-
-  const confirmed = confirm(
-    `Delete "${entry.title || "Untitled"}"?`
-  );
-
-  if (!confirmed) return;
-
-  entries = entries.filter(item => item.id !== currentReaderId);
-
-  saveEntries();
-
-  closeReader();
-
-  renderAll();
-}
+    if (!container) return;
 
 
-/* =========================================================
-   TODO EDITOR
-   ========================================================= */
-
-function openTodoEditor() {
-  const modal = document.getElementById("todoModal");
-  const input = document.getElementById("todoInput");
-
-  if (!modal || !input) return;
-
-  input.value = "";
-
-  modal.classList.add("show");
-  document.body.classList.add("modal-open");
-
-  setTimeout(() => {
-    input.focus();
-  }, 100);
-}
+    container.innerHTML = "";
 
 
-function closeTodoEditor() {
-  const modal = document.getElementById("todoModal");
+    if (todos.length === 0) {
 
-  if (modal) {
-    modal.classList.remove("show");
-  }
+        container.innerHTML = `
 
-  document.body.classList.remove("modal-open");
-}
+            <div class="empty-state">
 
+                <div class="empty-icon">
+                    ✓
+                </div>
 
-/* =========================================================
-   SAVE TODO
-   ========================================================= */
+                <h3>
+                    Your list is empty
+                </h3>
 
-function saveTodo() {
-  const input = document.getElementById("todoInput");
+                <p>
+                    Tap + to add your first task.
+                </p>
 
-  if (!input) return;
+            </div>
 
-  const text = input.value.trim();
+        `;
 
-  if (!text) {
-    alert("Write a task first.");
-    return;
-  }
+        return;
 
-  todos.unshift({
-    id: createId(),
-    text: text,
-    completed: false,
-    createdAt: new Date().toISOString()
-  });
-
-  saveTodos();
-
-  closeTodoEditor();
-
-  renderTodos();
-
-  showPage("todo");
-}
-
-
-/* =========================================================
-   RENDER TODOS
-   ========================================================= */
-
-function renderTodos() {
-  const container = document.getElementById("todoList");
-
-  if (!container) return;
-
-  if (todos.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-symbol">✦</div>
-        <h3>No tasks yet</h3>
-        <p>Add something you want to get done.</p>
-      </div>
-    `;
-
-    return;
-  }
-
-  container.innerHTML = todos
-    .map(todo => {
-      return `
-        <div
-          class="todo-item ${todo.completed ? "completed" : ""}"
-          data-todo-id="${escapeHTML(todo.id)}"
-        >
-          <button
-            class="todo-check"
-            type="button"
-            aria-label="Complete task"
-          >
-            ${todo.completed ? "✓" : ""}
-          </button>
-
-          <span class="todo-text">
-            ${escapeHTML(todo.text)}
-          </span>
-
-          <button
-            class="todo-delete"
-            type="button"
-            aria-label="Delete task"
-          >
-            ×
-          </button>
-        </div>
-      `;
-    })
-    .join("");
-
-  container.querySelectorAll(".todo-item").forEach(item => {
-    const id = item.dataset.todoId;
-
-    const checkButton = item.querySelector(".todo-check");
-    const deleteButton = item.querySelector(".todo-delete");
-
-    if (checkButton) {
-      checkButton.addEventListener("click", () => {
-        toggleTodo(id);
-      });
     }
 
-    if (deleteButton) {
-      deleteButton.addEventListener("click", () => {
-        deleteTodo(id);
-      });
+
+    todos.forEach(
+        function (todo) {
+
+            const item =
+                document.createElement("div");
+
+            item.className =
+                "todo-item";
+
+
+            const checkbox =
+                document.createElement("input");
+
+            checkbox.type =
+                "checkbox";
+
+            checkbox.className =
+                "todo-check";
+
+            checkbox.checked =
+                todo.completed;
+
+
+            const text =
+                document.createElement("input");
+
+            text.type =
+                "text";
+
+            text.className =
+                "todo-text";
+
+            text.value =
+                todo.text;
+
+
+            if (todo.completed) {
+
+                text.classList.add(
+                    "completed"
+                );
+
+            }
+
+
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.className =
+                "todo-delete";
+
+            deleteButton.innerHTML =
+                '<i class="fa-regular fa-trash-can"></i>';
+
+
+            /* Check / uncheck */
+
+            checkbox.addEventListener(
+                "change",
+                function () {
+
+                    todo.completed =
+                        checkbox.checked;
+
+
+                    text.classList.toggle(
+                        "completed",
+                        todo.completed
+                    );
+
+
+                    saveTodos();
+
+                }
+            );
+
+
+            /* Edit task */
+
+            text.addEventListener(
+                "change",
+                function () {
+
+                    todo.text =
+                        text.value.trim();
+
+                    saveTodos();
+
+                }
+            );
+
+
+            /* Delete task */
+
+            deleteButton.addEventListener(
+                "click",
+                function () {
+
+                    todos =
+                        todos.filter(
+                            function (item) {
+
+                                return (
+                                    item.id !==
+                                    todo.id
+                                );
+
+                            }
+                        );
+
+
+                    saveTodos();
+
+                    loadTodos();
+
+                }
+            );
+
+
+            item.appendChild(checkbox);
+
+            item.appendChild(text);
+
+            item.appendChild(deleteButton);
+
+
+            container.appendChild(item);
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   19. MOOD
+===================================================== */
+
+function saveMood(moodName) {
+
+    const newMood = {
+
+        id: Date.now(),
+
+        mood: moodName,
+
+        date: new Date().toISOString()
+
+    };
+
+
+    moods.unshift(newMood);
+
+
+    /* Keep the last 30 moods */
+
+    moods =
+        moods.slice(0, 30);
+
+
+    localStorage.setItem(
+        "myLittleNotesMoods",
+        JSON.stringify(moods)
+    );
+
+
+    loadMoods();
+
+}
+
+
+/* =====================================================
+   20. LOAD MOODS
+===================================================== */
+
+function loadMoods() {
+
+    const container =
+        document.getElementById(
+            "moodEntries"
+        );
+
+
+    if (!container) return;
+
+
+    container.innerHTML = "";
+
+
+    if (moods.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    ♡
+                </div>
+
+                <h3>
+                    No moods recorded yet
+                </h3>
+
+                <p>
+                    Choose a mood above.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
     }
-  });
+
+
+    moods.forEach(
+        function (mood) {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "entry-card";
+
+
+            const icon =
+                document.createElement("div");
+
+            icon.className =
+                "entry-number";
+
+            icon.textContent =
+                "♡";
+
+
+            const info =
+                document.createElement("div");
+
+            info.className =
+                "entry-info";
+
+
+            const title =
+                document.createElement("h3");
+
+            title.textContent =
+                mood.mood;
+
+
+            const date =
+                document.createElement("div");
+
+            date.className =
+                "entry-date";
+
+            date.textContent =
+                formatDate(mood.date);
+
+
+            info.appendChild(title);
+
+            info.appendChild(date);
+
+
+            card.appendChild(icon);
+
+            card.appendChild(info);
+
+
+            container.appendChild(card);
+
+        }
+    );
+
 }
 
 
-/* =========================================================
-   TOGGLE TODO
-   ========================================================= */
-
-function toggleTodo(id) {
-  const todo = todos.find(item => item.id === id);
-
-  if (!todo) return;
-
-  todo.completed = !todo.completed;
-
-  saveTodos();
-
-  renderTodos();
-}
-
-
-/* =========================================================
-   DELETE TODO
-   ========================================================= */
-
-function deleteTodo(id) {
-  todos = todos.filter(todo => todo.id !== id);
-
-  saveTodos();
-
-  renderTodos();
-}
-
-
-/* =========================================================
-   HOME STATISTICS
-   ========================================================= */
-
-function updateHomeStats() {
-  const totalEntries = entries.length;
-  const completedTodos = todos.filter(todo => todo.completed).length;
-
-  const entryCount = document.getElementById("entryCount");
-  const taskCount = document.getElementById("taskCount");
-
-  if (entryCount) {
-    entryCount.textContent = totalEntries;
-  }
-
-  if (taskCount) {
-    taskCount.textContent = completedTodos;
-  }
-}
-
-
-/* =========================================================
-   DATE FORMAT
-   ========================================================= */
-
-function formatDate(date) {
-  if (!date) return "";
-
-  const parsedDate = new Date(date);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return "";
-  }
-
-  return parsedDate.toLocaleDateString(undefined, {
-    day: "numeric",
-    month: "short",
-    year: "numeric"
-  });
-}
-
-
-/* =========================================================
-   ESCAPE USER TEXT
-   ========================================================= */
-
-function escapeHTML(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-
-/* =========================================================
-   THEME
-   ========================================================= */
+/* =====================================================
+   21. THEME
+===================================================== */
 
 function toggleTheme() {
-  const currentTheme =
-    document.documentElement.getAttribute("data-theme");
 
-  const newTheme =
-    currentTheme === "light" ? "dark" : "light";
+    document.body.classList.toggle(
+        "light-mode"
+    );
 
-  document.documentElement.setAttribute(
-    "data-theme",
-    newTheme
-  );
 
-  localStorage.setItem("voidTheme", newTheme);
+    const isLight =
+        document.body.classList.contains(
+            "light-mode"
+        );
 
-  updateThemeButton();
+
+    localStorage.setItem(
+        "myLittleNotesTheme",
+        isLight
+            ? "light"
+            : "dark"
+    );
+
+
+    updateThemeIcon();
+
 }
 
+
+/* =====================================================
+   22. LOAD THEME
+===================================================== */
 
 function loadTheme() {
-  const savedTheme =
-    localStorage.getItem("voidTheme") || "dark";
 
-  document.documentElement.setAttribute(
-    "data-theme",
-    savedTheme
-  );
+    const savedTheme =
+        localStorage.getItem(
+            "myLittleNotesTheme"
+        );
 
-  updateThemeButton();
+
+    if (savedTheme === "light") {
+
+        document.body.classList.add(
+            "light-mode"
+        );
+
+    }
+
+
+    updateThemeIcon();
+
 }
 
 
-function updateThemeButton() {
-  const button = document.getElementById("themeToggle");
+/* =====================================================
+   23. UPDATE THEME ICON
+===================================================== */
 
-  if (!button) return;
+function updateThemeIcon() {
 
-  const theme =
-    document.documentElement.getAttribute("data-theme");
+    const buttons =
+        document.querySelectorAll(
+            ".theme-button"
+        );
 
-  button.textContent =
-    theme === "light"
-      ? "☾ Dark Mode"
-      : "☀ Light Mode";
+
+    buttons.forEach(
+        function (button) {
+
+            if (
+                document.body.classList.contains(
+                    "light-mode"
+                )
+            ) {
+
+                button.innerHTML =
+                    '<i class="fa-regular fa-sun"></i>';
+
+            } else {
+
+                button.innerHTML =
+                    '<i class="fa-regular fa-moon"></i>';
+
+            }
+
+        }
+    );
+
 }
 
 
-/* =========================================================
-   CLEAR ALL DATA
-   ========================================================= */
+/* =====================================================
+   24. CLEAR ALL DATA
+===================================================== */
 
 function clearAllData() {
-  const confirmed = confirm(
-    "Delete all your VOID entries and tasks? This cannot be undone."
-  );
 
-  if (!confirmed) return;
-
-  entries = [];
-  todos = [];
-
-  localStorage.removeItem("voidEntries");
-  localStorage.removeItem("voidTodos");
-
-  closeEditor();
-  closeReader();
-  closeTodoEditor();
-
-  renderAll();
-
-  showPage("home");
-}
+    const answer =
+        confirm(
+            "Are you sure you want to delete all your saved notes, journal entries, tasks and moods?"
+        );
 
 
-/* =========================================================
-   MODAL CLICK HANDLING
-   ========================================================= */
-
-document.addEventListener("click", event => {
-  const editorModal = document.getElementById("editorModal");
-  const readerModal = document.getElementById("readerModal");
-  const todoModal = document.getElementById("todoModal");
-
-  if (
-    editorModal &&
-    event.target === editorModal
-  ) {
-    closeEditor();
-  }
-
-  if (
-    readerModal &&
-    event.target === readerModal
-  ) {
-    closeReader();
-  }
-
-  if (
-    todoModal &&
-    event.target === todoModal
-  ) {
-    closeTodoEditor();
-  }
-});
+    if (!answer) return;
 
 
-/* =========================================================
-   KEYBOARD SHORTCUTS
-   ========================================================= */
+    localStorage.removeItem(
+        "myLittleNotesEntries"
+    );
 
-document.addEventListener("keydown", event => {
-
-  // Escape closes open modal
-  if (event.key === "Escape") {
-    closeEditor();
-    closeReader();
-    closeTodoEditor();
-  }
-
-  // Ctrl/Cmd + Enter saves entry
-  if (
-    (event.ctrlKey || event.metaKey) &&
-    event.key === "Enter"
-  ) {
-    const editorModal =
-      document.getElementById("editorModal");
-
-    if (
-      editorModal &&
-      editorModal.classList.contains("show")
-    ) {
-      saveEntry();
-    }
-  }
-});
-
-
-/* =========================================================
-   TODO ENTER KEY
-   ========================================================= */
-
-document.addEventListener("keydown", event => {
-  const todoModal =
-    document.getElementById("todoModal");
-
-  const todoInput =
-    document.getElementById("todoInput");
-
-  if (
-    event.key === "Enter" &&
-    todoModal &&
-    todoModal.classList.contains("show") &&
-    document.activeElement === todoInput
-  ) {
-    saveTodo();
-  }
-});
-
-
-/* =========================================================
-   NAVIGATION BUTTONS
-   ========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  document.querySelectorAll("[data-page]").forEach(button => {
-    button.addEventListener("click", () => {
-      showPage(button.dataset.page);
-    });
-  });
-
-  document
-    .querySelectorAll("[data-mobile-page]")
-    .forEach(button => {
-      button.addEventListener("click", () => {
-        showPage(button.dataset.mobilePage);
-      });
-    });
-
-  loadData();
-  loadTheme();
-  renderAll();
-  showPage("home");
-});
+    loc
