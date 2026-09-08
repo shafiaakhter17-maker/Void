@@ -1,12 +1,13 @@
 {
-  "name": "VOID — Your Quiet Space",
-  "short_name": "VOID",
-  "description": "A quiet personal space for notes, journals, tasks, moods, hobbies and books.",
-  "start_url": "./",
+  "name": "My Little Notes",
+  "short_name": "Little Notes",
+  "description": "A little space for notes, journals, ideas, moods and everyday thoughts.",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#070707",
-  "theme_color": "#070707",
-  "orientation": "portrait",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "orientation": "portrait-primary",
+
   "icons": [
     {
       "src": "icon-192.png",
