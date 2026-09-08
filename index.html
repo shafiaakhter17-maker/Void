@@ -3,1065 +3,848 @@
 <head>
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="theme-color"
-        content="#050505"
-    >
+    <meta name="theme-color" content="#050505">
 
-    <meta
-        name="description"
-        content="A quiet space for your thoughts, plans and little things."
-    >
+    <meta name="description"
+          content="A calm little space for notes, thoughts, journals, ideas and everyday life.">
 
-    <title>VOID</title>
-
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
+    <title>My Little Notes ♡</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap"
-        rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
 
-    <!-- CSS -->
+    <!-- Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Main stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="app">
+    <!-- =========================================
+         APP
+    ========================================== -->
 
-    <!-- ==================================================
-         TOP HEADER
-    =================================================== -->
+    <div class="app">
 
-    <header class="top-header">
+        <!-- =====================================
+             SIDEBAR
+        ====================================== -->
 
-        <button
-            class="back-button"
-            id="backButton"
-            onclick="goHome()"
-            aria-label="Go back"
-        >
-            ←
-        </button>
+        <aside class="sidebar" id="sidebar">
 
-        <div class="logo">
-            V O I D
-        </div>
+            <!-- Logo / Header -->
 
-        <div class="header-right">
+            <div class="sidebar-header">
 
-            <span id="currentDate"></span>
+                <div class="logo-drawing">
+                    ☕ 📚 📷
+                </div>
 
-            <button
-                class="theme-button"
-                onclick="toggleTheme()"
-                aria-label="Change theme"
-            >
-                ☼
-            </button>
+                <h1>My Little Notes</h1>
 
-        </div>
+                <div class="heart">♡</div>
 
-    </header>
+            </div>
 
 
-    <!-- ==================================================
-         HOME PAGE
-    =================================================== -->
+            <!-- Navigation -->
 
-    <main>
+            <nav class="side-nav">
 
-        <section
-            id="homePage"
-            class="page active-page"
-        >
+                <button class="nav-item active"
+                        onclick="showSection('home')">
 
-            <!-- INTRO -->
+                    <i class="fa-solid fa-house"></i>
 
-            <div class="home-intro">
+                    <span>Home</span>
 
-                <div class="welcome-row">
+                </button>
+
+
+                <button class="nav-item"
+                        onclick="showSection('journal')">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                    <span>Journal</span>
+
+                </button>
+
+
+                <button class="nav-item"
+                        onclick="showSection('todo')">
+
+                    <i class="fa-regular fa-square-check"></i>
+
+                    <span>To Do List</span>
+
+                </button>
+
+
+                <button class="nav-item"
+                        onclick="showSection('notes')">
+
+                    <i class="fa-regular fa-note-sticky"></i>
+
+                    <span>Notes</span>
+
+                </button>
+
+
+                <button class="nav-item"
+                        onclick="showSection('hobbies')">
+
+                    <i class="fa-solid fa-mug-hot"></i>
+
+                    <span>Hobbies</span>
+
+                </button>
+
+
+                <button class="nav-item"
+                        onclick="showSection('mood')">
+
+                    <i class="fa-regular fa-heart"></i>
+
+                    <span>Mood</span>
+
+                </button>
+
+
+                <button class="nav-item"
+                        onclick="showSection('bookshelf')">
+
+                    <i class="fa-solid fa-book"></i>
+
+                    <span>Bookshelf</span>
+
+                </button>
+
+
+                <button class="nav-item"
+                        onclick="showSection('gratitude')">
+
+                    <i class="fa-regular fa-face-smile"></i>
+
+                    <span>Gratitude</span>
+
+                </button>
+
+
+                <button class="nav-item"
+                        onclick="showSection('ideas')">
+
+                    <i class="fa-regular fa-lightbulb"></i>
+
+                    <span>Ideas</span>
+
+                </button>
+
+
+                <button class="nav-item"
+                        onclick="showSection('planner')">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    <span>Planner</span>
+
+                </button>
+
+
+                <button class="nav-item"
+                        onclick="showSection('settings')">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>Settings</span>
+
+                </button>
+
+            </nav>
+
+
+            <!-- Bottom quote -->
+
+            <div class="sidebar-bottom">
+
+                <p>
+                    Small notes<br>
+                    for a big life ♡
+                </p>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================
+             MAIN CONTENT
+        ====================================== -->
+
+        <main class="main-content">
+
+
+            <!-- Mobile top bar -->
+
+            <header class="mobile-header">
+
+                <button class="menu-button"
+                        onclick="toggleSidebar()">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                </button>
+
+                <span>My Little Notes</span>
+
+                <button onclick="toggleTheme()"
+                        class="theme-button">
+
+                    <i class="fa-regular fa-moon"></i>
+
+                </button>
+
+            </header>
+
+
+            <!-- =================================
+                 HOME
+            ================================== -->
+
+            <section id="home"
+                     class="page-section active-section">
+
+                <div class="home-top">
 
                     <div>
 
-                        <p class="small-label">
-                            WELCOME TO YOUR SPACE
-                        </p>
+                        <h2>Good Morning ♡</h2>
 
-                        <h1 class="welcome-title">
-                            Good Morning
-                            <span>♡</span>
-                        </h1>
-
-                        <p class="welcome-subtitle">
-                            A little progress each day adds up to big things.
+                        <p>
+                            A little progress each day
+                            adds up to big things.
                         </p>
 
                     </div>
 
-                    <div class="decor-leaf">
-                        ♧
+
+                    <div class="today-date"
+                         id="todayDate">
+
                     </div>
 
                 </div>
 
-            </div>
+
+                <!-- Home cards -->
+
+                <div class="home-grid">
 
 
-            <!-- HOME CARDS -->
+                    <button class="home-card"
+                            onclick="showSection('journal')">
 
-            <div class="home-layout">
-
-                <div class="category-grid">
-
-
-                    <!-- JOURNAL -->
-
-                    <button
-                        class="category-card"
-                        onclick="openSection('journal')"
-                    >
-
-                        <span class="card-number">
-                            01
-                        </span>
-
-                        <div class="drawing journal-drawing">
-                            ♡
+                        <div class="card-icon">
+                            <i class="fa-solid fa-book-open"></i>
                         </div>
 
-                        <div class="category-info">
-
-                            <h2>
-                                Journal
-                            </h2>
-
-                            <p>
-                                Thoughts • Feelings • My own world
-                            </p>
-
+                        <div class="card-title">
+                            Journal
                         </div>
 
-                        <span class="card-arrow">
-                            →
-                        </span>
+                        <span class="card-arrow">→</span>
 
                     </button>
 
 
-                    <!-- TO DO -->
+                    <button class="home-card"
+                            onclick="showSection('todo')">
 
-                    <button
-                        class="category-card"
-                        onclick="openSection('todo')"
-                    >
-
-                        <span class="card-number">
-                            02
-                        </span>
-
-                        <div class="drawing todo-drawing">
-                            ☑
+                        <div class="card-icon">
+                            <i class="fa-regular fa-square-check"></i>
                         </div>
 
-                        <div class="category-info">
-
-                            <h2>
-                                To Do List
-                            </h2>
-
-                            <p>
-                                Small steps • Big dreams
-                            </p>
-
+                        <div class="card-title">
+                            To Do List
                         </div>
 
-                        <span class="card-arrow">
-                            →
-                        </span>
+                        <span class="card-arrow">→</span>
 
                     </button>
 
 
-                    <!-- NOTES -->
+                    <button class="home-card"
+                            onclick="showSection('notes')">
 
-                    <button
-                        class="category-card"
-                        onclick="openSection('notes')"
-                    >
-
-                        <span class="card-number">
-                            03
-                        </span>
-
-                        <div class="drawing notes-drawing">
-                            ▱
+                        <div class="card-icon">
+                            <i class="fa-regular fa-note-sticky"></i>
                         </div>
 
-                        <div class="category-info">
-
-                            <h2>
-                                Notes
-                            </h2>
-
-                            <p>
-                                Little things worth remembering
-                            </p>
-
+                        <div class="card-title">
+                            Notes
                         </div>
 
-                        <span class="card-arrow">
-                            →
-                        </span>
+                        <span class="card-arrow">→</span>
 
                     </button>
 
 
-                    <!-- HOBBIES -->
+                    <button class="home-card"
+                            onclick="showSection('hobbies')">
 
-                    <button
-                        class="category-card"
-                        onclick="openSection('hobbies')"
-                    >
-
-                        <span class="card-number">
-                            04
-                        </span>
-
-                        <div class="drawing hobbies-drawing">
-                            ♡
+                        <div class="card-icon">
+                            <i class="fa-solid fa-mug-hot"></i>
                         </div>
 
-                        <div class="category-info">
-
-                            <h2>
-                                Hobbies
-                            </h2>
-
-                            <p>
-                                Things you love to create
-                            </p>
-
+                        <div class="card-title">
+                            Hobbies
                         </div>
 
-                        <span class="card-arrow">
-                            →
-                        </span>
+                        <span class="card-arrow">→</span>
 
                     </button>
 
 
-                    <!-- MOOD -->
+                    <button class="home-card"
+                            onclick="showSection('mood')">
 
-                    <button
-                        class="category-card"
-                        onclick="openSection('mood')"
-                    >
-
-                        <span class="card-number">
-                            05
-                        </span>
-
-                        <div class="drawing mood-drawing">
-                            ☾
+                        <div class="card-icon">
+                            <i class="fa-regular fa-heart"></i>
                         </div>
 
-                        <div class="category-info">
-
-                            <h2>
-                                Mood
-                            </h2>
-
-                            <p>
-                                How are you feeling today?
-                            </p>
-
+                        <div class="card-title">
+                            Mood
                         </div>
 
-                        <span class="card-arrow">
-                            →
-                        </span>
+                        <span class="card-arrow">→</span>
 
                     </button>
 
 
-                    <!-- BOOKSHELF -->
+                    <button class="home-card"
+                            onclick="showSection('bookshelf')">
 
-                    <button
-                        class="category-card"
-                        onclick="openSection('bookshelf')"
-                    >
-
-                        <span class="card-number">
-                            06
-                        </span>
-
-                        <div class="drawing bookshelf-drawing">
-                            ▱
+                        <div class="card-icon">
+                            <i class="fa-solid fa-book"></i>
                         </div>
 
-                        <div class="category-info">
-
-                            <h2>
-                                Bookshelf
-                            </h2>
-
-                            <p>
-                                Stories, pages and little worlds
-                            </p>
-
+                        <div class="card-title">
+                            Bookshelf
                         </div>
 
-                        <span class="card-arrow">
-                            →
-                        </span>
+                        <span class="card-arrow">→</span>
+
+                    </button>
+
+
+                    <button class="home-card"
+                            onclick="showSection('gratitude')">
+
+                        <div class="card-icon">
+                            <i class="fa-regular fa-face-smile"></i>
+                        </div>
+
+                        <div class="card-title">
+                            Gratitude
+                        </div>
+
+                        <span class="card-arrow">→</span>
+
+                    </button>
+
+
+                    <button class="home-card"
+                            onclick="showSection('ideas')">
+
+                        <div class="card-icon">
+                            <i class="fa-regular fa-lightbulb"></i>
+                        </div>
+
+                        <div class="card-title">
+                            Ideas
+                        </div>
+
+                        <span class="card-arrow">→</span>
+
+                    </button>
+
+
+                    <button class="home-card"
+                            onclick="showSection('planner')">
+
+                        <div class="card-icon">
+                            <i class="fa-regular fa-calendar"></i>
+                        </div>
+
+                        <div class="card-title">
+                            Planner
+                        </div>
+
+                        <span class="card-arrow">→</span>
+
+                    </button>
+
+
+                    <!-- Decorative side message -->
+
+                    <div class="home-note">
+
+                        <span>Better notes</span>
+
+                        <span>·</span>
+
+                        <span>Calmer mind ♡</span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 JOURNAL
+            ================================== -->
+
+            <section id="journal"
+                     class="page-section">
+
+                <div class="section-header">
+
+                    <button class="back-button"
+                            onclick="showSection('home')">
+
+                        ←
+
+                    </button>
+
+                    <div>
+
+                        <h2>Journal</h2>
+
+                        <p>
+                            Thoughts · Feelings · My own world
+                        </p>
+
+                    </div>
+
+                    <button class="add-button"
+                            onclick="openEditor('journal')">
+
+                        +
 
                     </button>
 
                 </div>
 
 
-                <!-- SIDE QUOTE -->
+                <div id="journalEntries"
+                     class="entries-container">
 
-                <aside class="side-quote">
+                    <!-- Entries will appear here -->
 
-                    <div class="sparkle">
-                        ✧
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 TO DO LIST
+            ================================== -->
+
+            <section id="todo"
+                     class="page-section">
+
+                <div class="section-header">
+
+                    <button class="back-button"
+                            onclick="showSection('home')">
+
+                        ←
+
+                    </button>
+
+                    <div>
+
+                        <h2>To Do List</h2>
+
+                        <p>
+                            Small steps · Big dreams
+                        </p>
+
                     </div>
 
-                    <p>
-                        Better notes
-                        <br>
-                        —
-                        <br>
-                        Calmer mind
-                    </p>
+                    <button class="add-button"
+                            onclick="addTodo()">
 
-                    <span>
+                        +
+
+                    </button>
+
+                </div>
+
+
+                <div id="todoList"
+                     class="todo-container">
+
+                    <!-- Tasks will appear here -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 NOTES
+            ================================== -->
+
+            <section id="notes"
+                     class="page-section">
+
+                <div class="section-header">
+
+                    <button class="back-button"
+                            onclick="showSection('home')">
+
+                        ←
+
+                    </button>
+
+                    <div>
+
+                        <h2>Notes</h2>
+
+                        <p>
+                            Thoughts · Study · Everything
+                        </p>
+
+                    </div>
+
+                    <button class="add-button"
+                            onclick="openEditor('notes')">
+
+                        +
+
+                    </button>
+
+                </div>
+
+
+                <div id="notesEntries"
+                     class="entries-container">
+
+                    <!-- Notes will appear here -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 HOBBIES
+            ================================== -->
+
+            <section id="hobbies"
+                     class="page-section">
+
+                <div class="section-header">
+
+                    <button class="back-button"
+                            onclick="showSection('home')">
+
+                        ←
+
+                    </button>
+
+                    <div>
+
+                        <h2>Hobbies</h2>
+
+                        <p>
+                            Things I love doing
+                        </p>
+
+                    </div>
+
+                    <button class="add-button"
+                            onclick="openEditor('hobbies')">
+
+                        +
+
+                    </button>
+
+                </div>
+
+
+                <div id="hobbiesEntries"
+                     class="entries-container">
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 MOOD
+            ================================== -->
+
+            <section id="mood"
+                     class="page-section">
+
+                <div class="section-header">
+
+                    <button class="back-button"
+                            onclick="showSection('home')">
+
+                        ←
+
+                    </button>
+
+                    <div>
+
+                        <h2>Mood</h2>
+
+                        <p>
+                            How am I feeling today?
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mood-picker">
+
+                    <button onclick="saveMood('Happy')">
                         ♡
-                    </span>
+                        <span>Happy</span>
+                    </button>
 
-                    <div class="sparkles-bottom">
-                        ✧
-                        <br>
-                        ✧
+                    <button onclick="saveMood('Calm')">
+                        ☁
+                        <span>Calm</span>
+                    </button>
+
+                    <button onclick="saveMood('Okay')">
+                        :)
+                        <span>Okay</span>
+                    </button>
+
+                    <button onclick="saveMood('Tired')">
+                        ☾
+                        <span>Tired</span>
+                    </button>
+
+                    <button onclick="saveMood('Sad')">
+                        ♡
+                        <span>Sad</span>
+                    </button>
+
+                </div>
+
+
+                <div id="moodEntries"
+                     class="entries-container">
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================
+                 BOOKSHELF
+            ================================== -->
+
+            <section id="bookshelf"
+                     class="page-section">
+
+                <div class="section-header">
+
+                    <button class="back-button"
+                            onclick="showSection('home')">
+
+                        ←
+
+                    </button>
+
+                    <div>
+
+                        <h2>Bookshelf</h2>
+
+                        <p>
+                            Books · Reading · Little worlds
+                        </p>
+
                     </div>
 
-                </aside>
+                    <button class="add-button"
+                            onclick="openEditor('bookshelf')">
 
-            </div>
+                        +
 
-        </section>
-
-
-        <!-- ==================================================
-             JOURNAL PAGE
-        =================================================== -->
-
-        <section
-            id="journalPage"
-            class="page"
-        >
-
-            <div class="section-top">
-
-                <button
-                    class="section-back"
-                    onclick="goHome()"
-                >
-                    ←
-                </button>
-
-                <h1>
-                    Journal
-                </h1>
-
-                <button
-                    class="plus-button"
-                    onclick="openEditor('journal')"
-                >
-                    +
-                </button>
-
-            </div>
-
-
-            <div class="section-intro">
-
-                <div class="section-icon">
-                    ♡
-                </div>
-
-                <div>
-
-                    <h2>
-                        Journal
-                    </h2>
-
-                    <p>
-                        Thoughts&nbsp;&nbsp;•&nbsp;&nbsp;
-                        Feelings&nbsp;&nbsp;•&nbsp;&nbsp;
-                        My own world
-                    </p>
+                    </button>
 
                 </div>
 
-            </div>
 
-
-            <div class="section-divider"></div>
-
-
-            <div
-                id="journalEntries"
-                class="entry-list"
-            ></div>
-
-        </section>
-
-
-        <!-- ==================================================
-             TO DO PAGE
-        =================================================== -->
-
-        <section
-            id="todoPage"
-            class="page"
-        >
-
-            <div class="section-top">
-
-                <button
-                    class="section-back"
-                    onclick="goHome()"
-                >
-                    ←
-                </button>
-
-                <h1>
-                    To Do List
-                </h1>
-
-                <button
-                    class="plus-button"
-                    onclick="openTodoEditor()"
-                >
-                    +
-                </button>
-
-            </div>
-
-
-            <div class="section-intro">
-
-                <div class="section-icon checklist-icon">
-                    ☑
-                </div>
-
-                <div>
-
-                    <h2>
-                        To Do List
-                    </h2>
-
-                    <p>
-                        Small steps&nbsp;&nbsp;•&nbsp;&nbsp;
-                        Big dreams
-                    </p>
+                <div id="bookshelfEntries"
+                     class="entries-container">
 
                 </div>
 
-            </div>
+            </section>
 
 
-            <div class="section-divider"></div>
+            <!-- =================================
+                 GRATITUDE
+            ================================== -->
 
+            <section id="gratitude"
+                     class="page-section">
 
-            <div
-                id="todoEntries"
-                class="todo-entries"
-            ></div>
+                <div class="section-header">
 
+                    <button class="back-button"
+                            onclick="showSection('home')">
 
-            <div class="todo-bottom-quote">
-                ☕ &nbsp; You got this ♡
-            </div>
+                        ←
 
-        </section>
+                    </button>
 
+                    <div>
 
-        <!-- ==================================================
-             NOTES PAGE
-        =================================================== -->
+                        <h2>Gratitude</h2>
 
-        <section
-            id="notesPage"
-            class="page"
-        >
+                        <p>
+                            Little things worth remembering
+                        </p>
 
-            <div class="section-top">
+                    </div>
 
-                <button
-                    class="section-back"
-                    onclick="goHome()"
-                >
-                    ←
-                </button>
+                    <button class="add-button"
+                            onclick="openEditor('gratitude')">
 
-                <h1>
-                    Notes
-                </h1>
+                        +
 
-                <button
-                    class="plus-button"
-                    onclick="openEditor('notes')"
-                >
-                    +
-                </button>
-
-            </div>
-
-
-            <div class="section-intro">
-
-                <div class="section-icon">
-                    ▱
-                </div>
-
-                <div>
-
-                    <h2>
-                        Notes
-                    </h2>
-
-                    <p>
-                        Ideas&nbsp;&nbsp;•&nbsp;&nbsp;
-                        Reminders&nbsp;&nbsp;•&nbsp;&nbsp;
-                        Little things
-                    </p>
+                    </button>
 
                 </div>
 
-            </div>
 
-
-            <div class="section-divider"></div>
-
-
-            <div
-                id="notesEntries"
-                class="entry-list"
-            ></div>
-
-        </section>
-
-
-        <!-- ==================================================
-             HOBBIES PAGE
-        =================================================== -->
-
-        <section
-            id="hobbiesPage"
-            class="page"
-        >
-
-            <div class="section-top">
-
-                <button
-                    class="section-back"
-                    onclick="goHome()"
-                >
-                    ←
-                </button>
-
-                <h1>
-                    Hobbies
-                </h1>
-
-                <button
-                    class="plus-button"
-                    onclick="openEditor('hobbies')"
-                >
-                    +
-                </button>
-
-            </div>
-
-
-            <div class="section-intro">
-
-                <div class="section-icon">
-                    ♡
-                </div>
-
-                <div>
-
-                    <h2>
-                        Hobbies
-                    </h2>
-
-                    <p>
-                        Things&nbsp;&nbsp;•&nbsp;&nbsp;
-                        You&nbsp;&nbsp;•&nbsp;&nbsp;
-                        Love
-                    </p>
+                <div id="gratitudeEntries"
+                     class="entries-container">
 
                 </div>
 
-            </div>
+            </section>
 
 
-            <div class="section-divider"></div>
+            <!-- =================================
+                 IDEAS
+            ================================== -->
 
+            <section id="ideas"
+                     class="page-section">
 
-            <div
-                id="hobbiesEntries"
-                class="entry-list"
-            ></div>
+                <div class="section-header">
 
-        </section>
+                    <button class="back-button"
+                            onclick="showSection('home')">
 
+                        ←
 
-        <!-- ==================================================
-             MOOD PAGE
-        =================================================== -->
+                    </button>
 
-        <section
-            id="moodPage"
-            class="page"
-        >
+                    <div>
 
-            <div class="section-top">
+                        <h2>Ideas</h2>
 
-                <button
-                    class="section-back"
-                    onclick="goHome()"
-                >
-                    ←
-                </button>
+                        <p>
+                            Random thoughts · Big ideas
+                        </p>
 
-                <h1>
-                    Mood
-                </h1>
+                    </div>
 
-                <button
-                    class="plus-button"
-                    onclick="openEditor('mood')"
-                >
-                    +
-                </button>
+                    <button class="add-button"
+                            onclick="openEditor('ideas')">
 
-            </div>
+                        +
 
-
-            <div class="section-intro">
-
-                <div class="section-icon">
-                    ☾
-                </div>
-
-                <div>
-
-                    <h2>
-                        Mood
-                    </h2>
-
-                    <p>
-                        Thoughts&nbsp;&nbsp;•&nbsp;&nbsp;
-                        Feelings&nbsp;&nbsp;•&nbsp;&nbsp;
-                        Today
-                    </p>
+                    </button>
 
                 </div>
 
-            </div>
 
-
-            <div class="section-divider"></div>
-
-
-            <div
-                id="moodEntries"
-                class="entry-list"
-            ></div>
-
-        </section>
-
-
-        <!-- ==================================================
-             BOOKSHELF PAGE
-        =================================================== -->
-
-        <section
-            id="bookshelfPage"
-            class="page"
-        >
-
-            <div class="section-top">
-
-                <button
-                    class="section-back"
-                    onclick="goHome()"
-                >
-                    ←
-                </button>
-
-                <h1>
-                    Bookshelf
-                </h1>
-
-                <button
-                    class="plus-button"
-                    onclick="openEditor('bookshelf')"
-                >
-                    +
-                </button>
-
-            </div>
-
-
-            <div class="section-intro">
-
-                <div class="section-icon">
-                    ▱
-                </div>
-
-                <div>
-
-                    <h2>
-                        Bookshelf
-                    </h2>
-
-                    <p>
-                        Stories&nbsp;&nbsp;•&nbsp;&nbsp;
-                        Pages&nbsp;&nbsp;•&nbsp;&nbsp;
-                        Little worlds
-                    </p>
+                <div id="ideasEntries"
+                     class="entries-container">
 
                 </div>
 
-            </div>
+            </section>
 
 
-            <div class="section-divider"></div>
+            <!-- =================================
+                 PLANNER
+            ================================== -->
 
+            <section id="planner"
+                     class="page-section">
 
-            <div
-                id="bookshelfEntries"
-                class="entry-list"
-            ></div>
+                <div class="section-header">
 
-        </section>
+                    <button class="back-button"
+                            onclick="showSection('home')">
 
-    </main>
+                        ←
 
+                    </button>
 
-    <!-- ==================================================
-         WRITING EDITOR
-    =================================================== -->
+                    <div>
 
-    <div
-        id="editor"
-        class="modal"
-    >
+                        <h2>Planner</h2>
 
-        <div class="editor-box">
+                        <p>
+                            Organize your little world
+                        </p>
 
-            <div class="editor-header">
+                    </div>
 
-                <span id="editorType">
-                    NEW ENTRY
-                </span>
+                    <button class="add-button"
+                            onclick="openEditor('planner')">
 
-                <button
-                    onclick="closeEditor()"
-                    class="close-button"
-                >
-                    ×
-                </button>
+                        +
 
-            </div>
+                    </button>
 
+                </div>
 
-            <input
-                id="entryTitle"
-                class="entry-title-input"
-                type="text"
-                placeholder="Title..."
-                maxlength="100"
-                autocomplete="off"
-            >
 
+                <div id="plannerEntries"
+                     class="entries-container">
 
-            <textarea
-                id="entryContent"
-                class="entry-content-input"
-                placeholder="Write whatever you want..."
-            ></textarea>
+                </div>
 
+            </section>
 
-            <div class="editor-footer">
 
-                <span>
-                    Write freely.
-                </span>
+            <!-- =================================
+                 SETTINGS
+            ================================== -->
 
-                <button
-                    class="save-button"
-                    onclick="saveEntry()"
-                >
-                    Save
-                </button>
+            <section id="settings"
+                     class="page-section">
 
-            </div>
+                <div class="section-header">
 
-        </div>
-
-    </div>
-
-
-    <!-- ==================================================
-         TODO EDITOR
-    =================================================== -->
-
-    <div
-        id="todoEditor"
-        class="modal"
-    >
-
-        <div class="todo-editor-box">
-
-            <div class="editor-header">
-
-                <span>
-                    NEW TASK
-                </span>
-
-                <button
-                    onclick="closeTodoEditor()"
-                    class="close-button"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <input
-                id="todoInput"
-                class="entry-title-input"
-                type="text"
-                placeholder="What do you want to do?"
-                maxlength="200"
-                autocomplete="off"
-            >
-
-
-            <div class="editor-footer">
-
-                <span>
-                    Small steps count.
-                </span>
-
-                <button
-                    class="save-button"
-                    onclick="saveTodo()"
-                >
-                    Add
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ==================================================
-         READER
-    =================================================== -->
-
-    <div
-        id="reader"
-        class="modal"
-    >
-
-        <div class="reader-box">
-
-            <div class="reader-header">
-
-                <div>
-
-        <span
-
-<
-
-id="readerCategory"
-
-class="reader-category"
-
-</span>
-
-<span
-
->
-
-id="readerDate"
-
-class="reader-date"
-
-</span>
-
-</div>
-
-<button
-
-onclick="closeReader()"
-
-class="close-button"
-
-</button>
-
-</div>
-
-<h1 id="readerTitle">
-
-</h1>
-
-<div
-
-<
-
-id="readerContent"
-
-class="reader-content"
-
-</div>
-
-<div class="reader-actions">
-
-<button
-
-onclick="editCurrentEntry()"
-
-class="edit-button"
-
-Edit
-
-</button>
-
-<button
-
-onclick="deleteCurrentEntry()"
-
-class="delete-button"
-
-Delete
-
-</button>
-
-</div>
-
-</div>
-    </div>
-
-MOBILE NAVIGATION
-
-===
-
-<nav class="mobile-nav">
-
-<button
-
-onclick="goHome()"
-
-class="mobile-nav-button active"
-
-<span></span>
-
-<small>Home</small>
-
-</button>
-
-<button
-
-onclick="openSection('journal')"
-
-class="mobile-nav-button"
-
-<span></span>
-
-<small>Journal</small>
-
-</button>
-
-<button
-
-onclick="openSection('notes')"
-
-class="mobile-nav-button"
-
-<span></span>
-
-<small>Notes</small>
-
-</button>
-
-<button
-
-onclick="openSection('todo')"
-
-class="mobile-nav-button"
-
-<span></span>
-
-<small>To Do</small>
-
-</button>
-
-<button
-
->
-
-onclick="openSection('more')"
-
-class="mobile-nav-button"
-
-<span> </span>
-
-<small>More</small>
-
-</button>
-
-</nav>
-
-</div>
-<script src="script.js"></script>
-
-<script>
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function () {
-        navigator.serviceWorker.register("sw.js")
-            .catch(function(error) {
-                console.log(
-                    "Service worker registration failed:",
-                    error
-                );
-            });
-    });
-}
-</script>
-
-</body>
-</html>
+                    <button class="back-button"
+       
